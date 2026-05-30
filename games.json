@@ -1,0 +1,122 @@
+[
+  {
+    "id": "slope",
+    "title": "Slope",
+    "src": "https://slope-game.github.io/",
+    "image": "https://sz-games.github.io/cover/slope.webp"
+  },
+  {
+    "id": "1v1lol",
+    "title": "1v1.LOL",
+    "src": "https://1v1.lol/",
+    "image": "https://imgs.crazygames.com/1v1-lol_16x9/20250220083630/1v1-lol_16x9-cover?metadata=none&quality=40&width=356&fit=crop&optimizations=1"
+  },
+  {
+    "id": "2048",
+    "title": "2048",
+    "src": "https://play2048.co/",
+    "image": "https://sz-games.github.io/cover/2048.webp"
+  },
+  {
+    "id": "minecraft-classic",
+    "title": "Minecraft Classic",
+    "src": "https://classic.minecraft.net/",
+    "image": "https://www.minecraft.net/content/dam/games/minecraft/key-art/MC_Vanilla_360x240.jpg"
+  },
+  {
+    "id": "retro-bowl",
+    "title": "Retro Bowl",
+    "src": "https://retrobowl.me/",
+    "image": "https://imgs.crazygames.com/retro-bowl_16x9/20231018091443/retro-bowl_16x9-cover?metadata=none&quality=40&width=356&fit=crop&optimizations=1"
+  },
+  {
+    "id": "paper-io",
+    "title": "Paper.io 2",
+    "src": "https://paper-io.com/",
+    "image": "https://imgs.crazygames.com/paper-io-2_16x9/20240919090040/paper-io-2_16x9-cover?metadata=none&quality=40&width=356&fit=crop&optimizations=1"
+  },
+  {
+    "id": "cookie-clicker",
+    "title": "Cookie Clicker",
+    "src": "https://orteil.dashnet.org/cookieclicker/",
+    "image": "https://orteil.dashnet.org/cookieclicker/img/favicon.ico"
+  },
+  {
+    "id": "subway-surfers",
+    "title": "Subway Surfers",
+    "src": "https://poki.com/en/g/subway-surfers",
+    "image": "https://imgs.crazygames.com/subway-surfers_16x9/20241031064929/subway-surfers_16x9-cover?metadata=none&quality=40&width=356&fit=crop&optimizations=1"
+  },
+  {
+    "id": "moto-x3m",
+    "title": "Moto X3M",
+    "src": "https://www.crazygames.com/embed/moto-x3m",
+    "image": "https://imgs.crazygames.com/moto-x3m_16x9/20240919085128/moto-x3m_16x9-cover?metadata=none&quality=40&width=356&fit=crop&optimizations=1"
+  },
+  {
+    "id": "basketball-stars",
+    "title": "Basketball Stars",
+    "src": "https://www.crazygames.com/embed/basketball-stars",
+    "image": "https://imgs.crazygames.com/basketball-stars_16x9/20240919084344/basketball-stars_16x9-cover?metadata=none&quality=40&width=356&fit=crop&optimizations=1"
+  },
+  {
+    "id": "drift-hunters",
+    "title": "Drift Hunters",
+    "src": "https://drift-hunters.io/",
+    "image": "https://imgs.crazygames.com/drift-hunters_16x9/20240919085306/drift-hunters_16x9-cover?metadata=none&quality=40&width=356&fit=crop&optimizations=1"
+  },
+  {
+    "id": "vex-7",
+    "title": "Vex 7",
+    "src": "https://www.crazygames.com/embed/vex-7",
+    "image": "https://imgs.crazygames.com/vex-7_16x9/20240919091101/vex-7_16x9-cover?metadata=none&quality=40&width=356&fit=crop&optimizations=1"
+  },
+  {
+    "id": "snow-rider",
+    "title": "Snow Rider 3D",
+    "src": "https://snowrider3d.com/",
+    "image": "https://imgs.crazygames.com/snow-rider-3d_16x9/20240919090513/snow-rider-3d_16x9-cover?metadata=none&quality=40&width=356&fit=crop&optimizations=1"
+  },
+  {
+    "id": "fireboy-watergirl",
+    "title": "Fireboy and Watergirl",
+    "src": "https://www.coolmathgames.com/0-fireboy-and-watergirl-in-the-forest-temple",
+    "image": "https://imgs.crazygames.com/fireboy-and-watergirl-1-in-the-forest-temple_16x9/20240919085537/fireboy-and-watergirl-1-in-the-forest-temple_16x9-cover?metadata=none&quality=40&width=356&fit=crop&optimizations=1"
+  },
+  {
+    "id": "tetris",
+    "title": "Tetris",
+    "src": "https://tetris.com/play-tetris",
+    "image": "https://imgs.crazygames.com/tetris_16x9/20240919090757/tetris_16x9-cover?metadata=none&quality=40&width=356&fit=crop&optimizations=1"
+  },
+  {
+    "id": "google-snake",
+    "title": "Snake",
+    "src": "https://www.google.com/fbx?fbx=snake_arcade",
+    "image": "https://imgs.crazygames.com/snake_16x9/20240919090444/snake_16x9-cover?metadata=none&quality=40&width=356&fit=crop&optimizations=1"
+  },
+  {
+    "id": "chess",
+    "title": "Chess",
+    "src": "https://www.chess.com/play/computer",
+    "image": "https://imgs.crazygames.com/chess_16x9/20240919084646/chess_16x9-cover?metadata=none&quality=40&width=356&fit=crop&optimizations=1"
+  },
+  {
+    "id": "among-us",
+    "title": "Among Us",
+    "src": "https://www.crazygames.com/embed/among-us-online-edition",
+    "image": "https://imgs.crazygames.com/among-us-online-edition_16x9/20240919084157/among-us-online-edition_16x9-cover?metadata=none&quality=40&width=356&fit=crop&optimizations=1"
+  },
+  {
+    "id": "fnaf",
+    "title": "Five Nights at Freddy's",
+    "src": "https://www.crazygames.com/embed/five-nights-at-freddys",
+    "image": "https://imgs.crazygames.com/five-nights-at-freddys_16x9/20240919085553/five-nights-at-freddys_16x9-cover?metadata=none&quality=40&width=356&fit=crop&optimizations=1"
+  },
+  {
+    "id": "temple-run",
+    "title": "Temple Run 2",
+    "src": "https://poki.com/en/g/temple-run-2",
+    "image": "https://imgs.crazygames.com/temple-run-2_16x9/20240919090741/temple-run-2_16x9-cover?metadata=none&quality=40&width=356&fit=crop&optimizations=1"
+  }
+]
