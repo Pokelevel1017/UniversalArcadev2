@@ -224,11 +224,36 @@ body.is-home .page.active{display:flex!important;flex-direction:column;align-ite
   padding:16px;
 }
 
-/* No overlay */
-.card-fade{display:none;}
+/* Hover gradient overlay */
+.card-fade{
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(
+    to top,
+    rgba(0,0,0,0.88) 0%,
+    rgba(0,0,0,0.4) 35%,
+    transparent 65%
+  );
+  opacity:0;
+  transition:opacity var(--d-base) var(--ease);
+}
+.pg-card:hover .card-fade{opacity:1;}
 
-/* No label overlay */
-.card-label{display:none;}
+/* Label — slides up on hover */
+.card-label{
+  display:block;
+  position:absolute;left:10px;right:10px;bottom:10px;
+  font-size:12px;font-weight:600;
+  color:#fff;
+  text-shadow:0 1px 6px rgba(0,0,0,0.8);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  z-index:2;
+  letter-spacing:-0.01em;
+  line-height:1.3;
+  opacity:0;
+  transform:translateY(4px);
+  transition:opacity var(--d-base) var(--ease),transform var(--d-base) var(--ease);
+}
+.pg-card:hover .card-label{opacity:1;transform:translateY(0);}
 
 /* Typography fallback (no image): centered title */
 .card-typo{
@@ -246,8 +271,8 @@ body.is-home .page.active{display:flex!important;flex-direction:column;align-ite
   display:block;
 }
 
-.pg-card.has-img .card-fade{display:none;}
-.pg-card.has-img .card-label{display:none;}
+.pg-card.has-img .card-fade{display:block;}
+.pg-card.has-img .card-label{display:block;}
 
 /* ── Empty / loading ── */
 .grid-full{grid-column:1/-1;}
@@ -897,9 +922,9 @@ function typoTitle(t){return esc(t.replace(/\s*\([^)]*\)\s*/g,'').trim());}
 
 function cardHtml(g){
   if(g.image){
-    return`<article class="pg-card has-img" data-id="${esc(g.id)}"><img class="card-img" src="${esc(g.image)}" alt="${esc(g.title)}" loading="lazy" decoding="async" onerror="this.closest('.pg-card').classList.remove('has-img');this.remove()"/></article>`;
+    return`<article class="pg-card has-img" data-id="${esc(g.id)}"><img class="card-img" src="${esc(g.image)}" alt="${esc(g.title)}" loading="lazy" decoding="async" onerror="this.closest('.pg-card').classList.remove('has-img');this.remove()"/><div class="card-fade"></div><div class="card-label">${esc(g.title)}</div></article>`;
   }
-  return`<article class="pg-card" data-id="${esc(g.id)}"><div class="card-bg"><div class="card-typo">${typoTitle(g.title)}</div></div></article>`;
+  return`<article class="pg-card" data-id="${esc(g.id)}"><div class="card-bg"><div class="card-typo">${typoTitle(g.title)}</div></div><div class="card-fade"></div><div class="card-label">${esc(g.title)}</div></article>`;
 }
 
 function renderChunked(grid,list){
