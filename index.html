@@ -35,7 +35,6 @@ body{
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
 }
-/* Particle canvas */
 #particle-canvas{
   position:fixed;inset:0;pointer-events:none;z-index:0;
   opacity:1;
@@ -148,10 +147,6 @@ body.is-home .page.active{display:flex!important;flex-direction:column;align-ite
   border-color:rgba(255,255,255,0.18);
   box-shadow:0 2px 0 rgba(255,255,255,0.07) inset,0 16px 48px rgba(0,0,0,0.75),0 0 0 4px rgba(255,255,255,0.04);
 }
-.home-search-icon{
-  position:absolute;left:18px;top:50%;transform:translateY(-50%);
-  width:16px;height:16px;color:var(--text-3);pointer-events:none;
-}
 /* ── Page header ── */
 .pg-header{
   padding:64px 40px 40px;
@@ -190,10 +185,6 @@ body.is-home .page.active{display:flex!important;flex-direction:column;align-ite
   box-shadow:0 2px 0 rgba(255,255,255,0.07) inset,0 8px 32px rgba(0,0,0,0.6),0 0 0 3px rgba(255,255,255,0.04);
 }
 .pg-search-wrap input::placeholder{color:var(--text-3);}
-.pg-search-icon{
-  position:absolute;left:16px;top:50%;transform:translateY(-50%);
-  width:16px;height:16px;color:var(--text-3);pointer-events:none;
-}
 
 /* ── Game grid ── */
 .pg-grid{
@@ -220,7 +211,6 @@ body.is-home .page.active{display:flex!important;flex-direction:column;align-ite
   z-index:2;
 }
 .pg-card:active{transform:translateY(-1px) scale(1.01);}
-
 .card-bg{
   position:absolute;inset:0;
   display:flex;align-items:center;justify-content:center;
@@ -451,7 +441,6 @@ body.is-home .page.active{display:flex!important;flex-direction:column;align-ite
   font-size:13px;color:var(--text-3);font-family:var(--font);
   display:block;letter-spacing:-0.01em;
 }
-.settings-row.danger{}
 .settings-btn.danger{color:rgba(255,75,75,0.75);border-color:rgba(255,60,60,0.2);background:rgba(255,50,50,0.04);}
 .settings-btn.danger:hover{background:rgba(255,50,50,0.09);color:rgba(255,90,90,0.95);border-color:rgba(255,60,60,0.35);}
 @media(max-width:700px){
@@ -468,75 +457,196 @@ body.is-home .page.active{display:flex!important;flex-direction:column;align-ite
 .changelog-title{font-size:20px;font-weight:700;letter-spacing:-0.03em;color:var(--text);margin-bottom:8px;}
 .changelog-body{font-size:13.5px;color:var(--text-2);line-height:1.65;}
 
-/* ── Game View Overlay ── */
+/* ═══════════════════════════════════════════
+   GAME VIEW — new layout matching screenshot
+   ═══════════════════════════════════════════ */
 .game-view{
   display:none;
   position:fixed;inset:0;z-index:200;
-  background:var(--bg);
-  flex-direction:column;
+  background:#0d0d0d;
+  flex-direction:row;
+  overflow:hidden;
 }
 body.in-game{overflow:hidden;}
 body.in-game .game-view{display:flex;}
 body.in-game .app{display:none;}
 
-/* Top bar */
-.game-topbar{
-  height:52px;
-  display:flex;align-items:center;
-  padding:0 12px;gap:4px;
-  border-bottom:1px solid var(--line);
+/* ── Right sidebar ── */
+.game-sidebar{
+  width:56px;
   flex-shrink:0;
-  background:rgba(8,8,8,0.9);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  position:relative;z-index:2;
+  background:rgba(15,15,15,0.98);
+  border-left:1px solid rgba(255,255,255,0.07);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:16px 0;
+  gap:4px;
+  z-index:2;
 }
-.gtb-logo{
-  width:26px;height:26px;flex-shrink:0;opacity:0.6;margin-right:4px;
-}
-.gtb-logo svg{width:100%;height:100%;}
-.gtb-divider{width:1px;height:18px;background:var(--line-2);flex-shrink:0;margin:0 6px;}
-.gtb-title{
-  flex:1;font-size:13px;font-weight:500;color:var(--text-2);
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-  letter-spacing:-0.01em;font-family:var(--font);
-}
-.gtb-btn{
-  width:36px;height:36px;
-  display:grid;place-items:center;border-radius:9px;
+.gsb-btn{
+  width:40px;height:40px;
+  display:grid;place-items:center;
+  border-radius:10px;
   border:1px solid transparent;
-  color:var(--text-3);cursor:pointer;flex-shrink:0;
+  color:rgba(255,255,255,0.28);
+  cursor:pointer;flex-shrink:0;
   transition:color var(--d-fast) ease,border-color var(--d-fast) ease,background var(--d-fast) ease;
+  position:relative;
 }
-.gtb-btn svg{width:15px;height:15px;}
-.gtb-btn:hover{color:var(--text-2);border-color:var(--line-2);background:rgba(255,255,255,0.04);}
-.gtb-btn.active{color:var(--text);}
-.gtb-btn.active svg{fill:currentColor;}
-.gtb-close:hover{color:rgba(255,90,90,0.85);border-color:rgba(255,80,80,0.18);background:rgba(255,80,80,0.06);}
+.gsb-btn svg{width:17px;height:17px;}
+.gsb-btn:hover{
+  color:rgba(255,255,255,0.7);
+  border-color:rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.06);
+}
+.gsb-btn.active{color:#fff;}
+.gsb-btn.active svg{fill:currentColor;}
+.gsb-close:hover{
+  color:rgba(255,100,100,0.9);
+  border-color:rgba(255,80,80,0.2);
+  background:rgba(255,60,60,0.08);
+}
+.gsb-sep{
+  width:24px;height:1px;
+  background:rgba(255,255,255,0.08);
+  margin:6px 0;
+  flex-shrink:0;
+}
+/* game title tooltip on hover */
+.gsb-title-area{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  padding:8px 0;
+}
+.gsb-game-name{
+  writing-mode:vertical-rl;
+  text-orientation:mixed;
+  transform:rotate(180deg);
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.18);
+  font-family:var(--font-mono);
+  max-height:160px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  user-select:none;
+  pointer-events:none;
+}
 
-/* Game stage */
+/* ── Main game area ── */
+.game-main{
+  flex:1;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  background:#0d0d0d;
+}
+
+/* ── Game stage (iframe container) ── */
 .game-stage{
-  flex:1;position:relative;overflow:hidden;
-  background:#000;
+  flex:1;
+  position:relative;
+  overflow:hidden;
+  background:#111;
+  /* slight inset so the frame sits as a card */
+  margin:12px 0 12px 12px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.07);
+  box-shadow:0 0 0 1px rgba(0,0,0,0.5), 0 8px 40px rgba(0,0,0,0.6);
 }
 .game-stage iframe{
   width:100%;height:100%;border:0;display:block;
   transform:translateZ(0);will-change:transform;
   position:absolute;inset:0;
+  border-radius:9px;
 }
 
-/* Loader */
+/* ── Bottom toolbar ── */
+.game-toolbar{
+  height:60px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 12px 0 12px;
+  gap:0;
+}
+.game-toolbar-inner{
+  display:flex;
+  align-items:center;
+  gap:2px;
+  padding:5px;
+  background:rgba(20,20,20,0.92);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:16px;
+  box-shadow:
+    0 2px 0 rgba(255,255,255,0.05) inset,
+    0 8px 32px rgba(0,0,0,0.8);
+}
+.gtb-btn{
+  width:40px;height:40px;
+  display:grid;place-items:center;
+  border-radius:10px;
+  border:1px solid transparent;
+  color:rgba(255,255,255,0.45);
+  cursor:pointer;flex-shrink:0;
+  transition:color var(--d-fast) ease,border-color var(--d-fast) ease,background var(--d-fast) ease;
+}
+.gtb-btn svg{width:15px;height:15px;}
+.gtb-btn:hover{
+  color:rgba(255,255,255,0.85);
+  border-color:rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.07);
+}
+.gtb-btn.active{color:#fff;}
+.gtb-btn.active svg{fill:currentColor;}
+.gtb-sep{
+  width:1px;height:20px;
+  background:rgba(255,255,255,0.08);
+  margin:0 3px;
+  flex-shrink:0;
+}
+/* game title in toolbar center */
+.gtb-title-pill{
+  display:flex;align-items:center;
+  padding:6px 14px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:8px;
+  font-size:12px;font-weight:600;
+  color:rgba(255,255,255,0.4);
+  font-family:var(--font);
+  letter-spacing:-0.01em;
+  max-width:200px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  cursor:default;
+  user-select:none;
+}
+
+/* ── Loader ── */
 .game-loader{
   position:absolute;inset:0;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:18px;
-  background:var(--bg);
+  background:#111;
   z-index:10;
+  border-radius:9px;
   pointer-events:none;
   transition:opacity 0.35s ease;
 }
 .game-loader.hidden{opacity:0;}
-.loader-icon{width:64px;height:64px;}
+.loader-icon{width:56px;height:56px;}
 .saturn-ring-back{
   stroke-dasharray:160;stroke-dashoffset:160;
   animation:ringOrbit 2s linear infinite;opacity:0.3;
@@ -549,35 +659,13 @@ body.in-game .app{display:none;}
 @keyframes ringOrbit{0%{stroke-dashoffset:160;}100%{stroke-dashoffset:-160;}}
 @keyframes saturnPulse{0%,100%{opacity:1;}50%{opacity:0.75;}}
 .loader-title{
-  font-size:14px;font-weight:600;color:var(--text-2);
-  letter-spacing:-0.02em;max-width:280px;text-align:center;font-family:var(--font);
+  font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);
+  letter-spacing:-0.02em;max-width:260px;text-align:center;font-family:var(--font);
 }
 .loader-sub{
-  font-size:10px;color:var(--text-3);
-  letter-spacing:0.12em;text-transform:uppercase;font-family:var(--font-mono);
+  font-size:9px;color:rgba(255,255,255,0.2);
+  letter-spacing:0.15em;text-transform:uppercase;font-family:var(--font-mono);
 }
-
-/* ── Game info panel ── */
-.game-info-bar{
-  height:0;overflow:hidden;
-  background:var(--bg-2);
-  border-top:0px solid var(--line);
-  transition:height var(--d-slow) var(--ease),border-top-width var(--d-fast) ease;
-  flex-shrink:0;
-}
-.game-info-bar.open{height:56px;border-top-width:1px;}
-.game-info-inner{
-  height:56px;display:flex;align-items:center;
-  padding:0 16px;gap:16px;
-}
-.game-info-tag{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:5px 10px;background:rgba(255,255,255,0.05);
-  border:1px solid var(--line-2);border-radius:7px;
-  font-size:11px;font-weight:500;color:var(--text-3);
-  font-family:var(--font-mono);white-space:nowrap;
-}
-.game-info-tag svg{width:11px;height:11px;}
 
 /* ── Themes ── */
 body.theme-purple{--bg:#0a0810;--bg-2:#110e18;--bg-3:#181420;--bg-4:#1f1a29;--line:rgba(160,120,255,0.05);--line-2:rgba(160,120,255,0.09);--line-3:rgba(160,120,255,0.16);}
@@ -637,8 +725,18 @@ body.theme-amoled{--bg:#000;--bg-2:#040404;--bg-3:#080808;--bg-4:#0e0e0e;--line:
   .emu-grid{padding:16px 20px 48px;}
   .settings-body{grid-template-columns:1fr;padding:0 20px 60px;}
   .changelog-wrap{padding:0 20px 60px;}
+  /* mobile game view: sidebar becomes bottom strip */
+  .game-sidebar{
+    width:100%;height:48px;flex-direction:row;
+    border-left:none;border-top:1px solid rgba(255,255,255,0.07);
+    padding:0 12px;justify-content:space-around;
+  }
+  .gsb-title-area,.gsb-game-name{display:none;}
+  .game-main{flex-direction:column-reverse;}
+  .game-stage{margin:12px 12px 0;}
+  .game-toolbar{height:52px;padding:0 8px;}
 }
-@media(hover:none){.pg-card:hover,.emu-card:hover,.home-chip:hover{transform:none!important;}}
+@media(hover:none){.pg-card:hover,.emu-card:hover{transform:none!important;}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
 </style>
 </head>
@@ -863,47 +961,95 @@ body.theme-amoled{--bg:#000;--bg-2:#040404;--bg-3:#080808;--bg-4:#0e0e0e;--line:
   </div>
 </div><!-- end .app -->
 
-<!-- ── Game View ── -->
+<!-- ══════════════════════════════════════
+     GAME VIEW — sidebar + stage + toolbar
+     ══════════════════════════════════════ -->
 <div class="game-view" id="game-view" aria-hidden="true">
-  <div class="game-topbar">
-    <div class="gtb-logo">
-      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="32" cy="32" r="14" fill="#fff"/>
-        <ellipse cx="32" cy="32" rx="30" ry="8" fill="none" stroke="#fff" stroke-width="3" transform="rotate(-20 32 32)"/>
-      </svg>
+
+  <!-- Main content area (iframe + bottom toolbar) -->
+  <div class="game-main">
+    <!-- Game stage -->
+    <div class="game-stage" id="game-stage">
+      <div class="game-loader" id="game-loader">
+        <svg class="loader-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <ellipse class="saturn-ring-back" cx="32" cy="32" rx="30" ry="8" fill="none" stroke="#fff" stroke-width="2.5" transform="rotate(-20 32 32)"/>
+          <circle class="saturn-body" cx="32" cy="32" r="14" fill="#fff"/>
+          <ellipse class="saturn-ring-front" cx="32" cy="32" rx="30" ry="8" fill="none" stroke="#fff" stroke-width="2.5" transform="rotate(-20 32 32)"/>
+        </svg>
+        <div class="loader-title" id="game-loader-title"></div>
+        <div class="loader-sub">loading</div>
+      </div>
     </div>
-    <div class="gtb-divider"></div>
-    <div class="game-topbar-title" id="game-topbar-title"></div>
-    <button class="gtb-btn" id="fav-btn" title="Favorite">
+
+    <!-- Bottom toolbar -->
+    <div class="game-toolbar">
+      <div class="game-toolbar-inner">
+        <!-- fullscreen -->
+        <button class="gtb-btn" id="fs-btn" title="Fullscreen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+        </button>
+        <!-- reload -->
+        <button class="gtb-btn" id="reload-btn" title="Reload">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        </button>
+        <!-- copy link (no-op placeholder) -->
+        <button class="gtb-btn" id="copylink-btn" title="Copy link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </button>
+        <!-- new tab -->
+        <button class="gtb-btn" id="newtab-btn" title="Open in new tab">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+        </button>
+
+        <div class="gtb-sep"></div>
+
+        <!-- game title pill -->
+        <div class="gtb-title-pill" id="gtb-title-pill">—</div>
+
+        <div class="gtb-sep"></div>
+
+        <!-- favorite -->
+        <button class="gtb-btn" id="fav-btn" title="Favorite">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right sidebar -->
+  <div class="game-sidebar">
+    <!-- Nav icons mirroring main nav -->
+    <button class="gsb-btn" title="Home" id="gsb-home-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </button>
+    <button class="gsb-btn" title="Games" id="gsb-games-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/></svg>
+    </button>
+    <button class="gsb-btn" title="Emulation" id="gsb-emu-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="2" x2="9" y2="4"/><line x1="15" y1="2" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="22"/><line x1="15" y1="20" x2="15" y2="22"/><line x1="20" y1="9" x2="22" y2="9"/><line x1="20" y1="14" x2="22" y2="14"/><line x1="2" y1="9" x2="4" y2="9"/><line x1="2" y1="14" x2="4" y2="14"/></svg>
+    </button>
+    <button class="gsb-btn" title="Favorites" id="gsb-favs-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
     </button>
-    <button class="gtb-btn" id="newtab-btn" title="Open in new tab">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+
+    <!-- spacer with rotated game title -->
+    <div class="gsb-title-area">
+      <span class="gsb-game-name" id="gsb-game-name"></span>
+    </div>
+
+    <div class="gsb-sep"></div>
+
+    <!-- settings -->
+    <button class="gsb-btn" title="Settings" id="gsb-settings-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     </button>
-    <button class="gtb-btn" id="reload-btn" title="Reload">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
-    </button>
-    <button class="gtb-btn" id="fs-btn" title="Fullscreen">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
-    </button>
-    <div class="gtb-divider"></div>
-    <button class="gtb-btn gtb-close" id="close-btn" title="Close (Esc)">
+    <!-- close (X) -->
+    <button class="gsb-btn gsb-close" id="close-btn" title="Close (Esc)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
   </div>
 
-  <div class="game-stage" id="game-stage">
-    <div class="game-loader" id="game-loader">
-      <svg class="loader-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-        <ellipse class="saturn-ring-back" cx="32" cy="32" rx="30" ry="8" fill="none" stroke="#fff" stroke-width="2.5" transform="rotate(-20 32 32)"/>
-        <circle class="saturn-body" cx="32" cy="32" r="14" fill="#fff"/>
-        <ellipse class="saturn-ring-front" cx="32" cy="32" rx="30" ry="8" fill="none" stroke="#fff" stroke-width="2.5" transform="rotate(-20 32 32)"/>
-      </svg>
-      <div class="loader-title" id="game-loader-title"></div>
-      <div class="loader-sub">loading</div>
-    </div>
-  </div>
-</div>
+</div><!-- end .game-view -->
 
 <script>
 (()=>{
@@ -971,7 +1117,6 @@ function goPage(name){
   try{window.scrollTo({top:0,behavior:'instant'});}catch{}
 }
 
-// Initial state
 document.body.classList.add('is-home');
 _pages.forEach(p=>{p.style.display=p.id==='page-home'?'block':'none';});
 
@@ -1008,11 +1153,10 @@ function renderGames(){
 function renderFavs(){
   const list=favs.map(id=>GAMES.find(g=>g.id===id)).filter(Boolean);
   const grid=$('favorites-grid');if(!grid)return;
-  if(!list.length){grid.innerHTML=emptyHtml(ICON_HEART,'No favorites yet','While playing a game, tap the heart icon in the top bar to save it here.');return;}
+  if(!list.length){grid.innerHTML=emptyHtml(ICON_HEART,'No favorites yet','While playing a game, tap the heart icon in the toolbar to save it here.');return;}
   renderChunked(grid,list);
 }
 
-// Delegation
 document.addEventListener('click',e=>{
   const cc=e.target.closest('.emu-card[data-console]');
   if(cc&&!e.target.closest('.pg-card')){currentConsole=cc.dataset.console;renderEmuGames(currentConsole);return;}
@@ -1059,7 +1203,9 @@ function resetLoader(){
 function openGame(g){
   currentGame=g;
   updateFavBtn();
-  $('game-topbar-title').textContent=g.title;
+  // Update title in toolbar pill and sidebar
+  const pill=$('gtb-title-pill');if(pill)pill.textContent=g.title;
+  const sname=$('gsb-game-name');if(sname)sname.textContent=g.title;
   const stage=$('game-stage');
   const old=stage.querySelector('iframe');if(old)old.remove();
   resetLoader();showLoader(g.title);
@@ -1068,7 +1214,7 @@ function openGame(g){
   iframe.allow='autoplay;fullscreen;gamepad;pointer-lock;microphone;camera;midi;encrypted-media;clipboard-read;clipboard-write;storage-access;gyroscope;accelerometer';
   iframe.allowFullscreen=true;
   iframe.setAttribute('loading','eager');
-  iframe.style.cssText='width:100%;height:100%;border:0;display:block;transform:translateZ(0);position:absolute;inset:0;';
+  iframe.style.cssText='width:100%;height:100%;border:0;display:block;transform:translateZ(0);position:absolute;inset:0;border-radius:9px;';
   iframe.addEventListener('load',hideLoader,{once:true});
   stage.appendChild(iframe);
   currentIframe=iframe;
@@ -1093,15 +1239,34 @@ function updateFavBtn(){
   btn.querySelector('svg').setAttribute('fill',on?'currentColor':'none');
 }
 
+// Keyboard
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeGame();});
-document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>{if(document.body.classList.contains('in-game'))closeGame();goPage(b.dataset.page);}));
+
+// Main nav → page switch
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>{
+  if(document.body.classList.contains('in-game'))closeGame();
+  goPage(b.dataset.page);
+}));
+
+// Close btn
 $('close-btn').addEventListener('click',closeGame);
+
+// Sidebar nav buttons
+$('gsb-home-btn').addEventListener('click',()=>{closeGame();goPage('home');});
+$('gsb-games-btn').addEventListener('click',()=>{closeGame();goPage('games');});
+$('gsb-emu-btn').addEventListener('click',()=>{closeGame();goPage('emulators');});
+$('gsb-favs-btn').addEventListener('click',()=>{closeGame();goPage('favorites');});
+$('gsb-settings-btn').addEventListener('click',()=>{closeGame();goPage('settings');});
+
+// Favorite btn
 $('fav-btn').addEventListener('click',()=>{
   if(!currentGame)return;
   const idx=favs.indexOf(currentGame.id);
   if(idx>=0)favs.splice(idx,1);else favs=[currentGame.id,...favs].slice(0,100);
   store.set('ua-favs',JSON.stringify(favs));updateFavBtn();
 });
+
+// New tab
 $('newtab-btn').addEventListener('click',()=>{
   if(!currentGame)return;
   const w=window.open('about:blank','_blank');
@@ -1112,6 +1277,14 @@ $('newtab-btn').addEventListener('click',()=>{
   w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+safeTitle+'</title><style>*{margin:0;padding:0}html,body{height:100%;overflow:hidden;background:#000}iframe{width:100%;height:100%;border:0;display:block}</style></head><body><iframe src="'+safeSrc+'" allow="autoplay;fullscreen;gamepad;pointer-lock;microphone;camera;midi;encrypted-media;clipboard-read;clipboard-write;storage-access;gyroscope;accelerometer" allowfullscreen></iframe></body></html>');
   w.document.close();
 });
+
+// Copy link
+$('copylink-btn').addEventListener('click',()=>{
+  if(!currentGame)return;
+  try{navigator.clipboard.writeText(currentGame.src);}catch{}
+});
+
+// Reload
 $('reload-btn').addEventListener('click',()=>{
   if(!currentIframe||!currentGame)return;
   resetLoader();showLoader(currentGame.title);
@@ -1119,12 +1292,15 @@ $('reload-btn').addEventListener('click',()=>{
   currentIframe.src='about:blank';
   setTimeout(()=>{if(currentIframe)currentIframe.src=currentGame.src;},80);
 });
+
+// Fullscreen
 $('fs-btn').addEventListener('click',()=>{
   const stage=$('game-stage');
   if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
   else{const fn=stage.requestFullscreen||stage.webkitRequestFullscreen;if(fn)fn.call(stage).catch(()=>{});}
 });
 
+// Load data
 async function loadEmulation(){
   try{
     const res=await fetch('emulation.json?v='+Date.now(),{cache:'no-store'});
@@ -1183,7 +1359,6 @@ function applyCloak(preset,customTitle,customFavicon){
   sel.addEventListener('change',()=>{store.set('ua-cloak',sel.value);syncCustom();applyCloak(sel.value,tInp?.value||'',fInp?.value||'');});
   tInp?.addEventListener('input',()=>{store.set('ua-cloak-title',tInp.value);applyCloak(sel.value,tInp.value,fInp?.value||'');});
   fInp?.addEventListener('input',()=>{store.set('ua-cloak-favicon',fInp.value);applyCloak(sel.value,tInp?.value||'',fInp.value);});
-  // reset cloak btn
   document.getElementById('cloak-reset-btn')?.addEventListener('click',()=>{
     store.set('ua-cloak','none');store.set('ua-cloak-title','');store.set('ua-cloak-favicon','');
     if(sel)sel.value='none';sel?.dispatchEvent(new Event('change'));
@@ -1202,9 +1377,7 @@ const keyDisplay=k=>!k?'—':k===' '?'Space':k.length===1?k.toUpperCase():k;
   if(disp)disp.textContent=keyDisplay(panicKey);
   if(urlInp)urlInp.value=panicUrl;
   if(tog){
-    const sync=()=>{
-      tog.setAttribute('aria-pressed',panicEnabled?'true':'false');
-    };
+    const sync=()=>{tog.setAttribute('aria-pressed',panicEnabled?'true':'false');};
     sync();
     tog.addEventListener('click',()=>{panicEnabled=!panicEnabled;store.set('ua-panic-on',panicEnabled?'1':'0');sync();});
   }
@@ -1243,7 +1416,7 @@ $('ab-open').addEventListener('click',()=>{
   const safeHref=location.href.replace(/"/g,'&quot;');
   const safeFav=fav.replace(/"/g,'&quot;');
   w.document.open();
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+safeTitle+'</title>'+(fav?'<link rel="icon" href="'+safeFav+'"/>' :'')+
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+safeTitle+'</title>'+(fav?'<link rel="icon" href="'+safeFav+'"/>':'')+
     '<style>*{margin:0;padding:0}html,body{height:100%;overflow:hidden;background:#080808}iframe{width:100%;height:100%;border:0;display:block}</style>'+
     '</head><body><iframe src="'+safeHref+'" allow="autoplay;fullscreen;gamepad;pointer-lock;microphone;camera;midi;encrypted-media" allowfullscreen></iframe></body></html>');
   w.document.close();
@@ -1264,7 +1437,7 @@ const THEMES=['default','purple','blue','green','red','amoled'];
   }
 })();
 
-// ── URL Cloak (apply saved on load only) ──
+// ── URL Cloak ──
 (function initUrlCloak(){
   const saved=store.get('ua-url-cloak','');
   if(saved){try{history.replaceState(null,'',saved);}catch{}}
@@ -1294,7 +1467,7 @@ $('data-clear').addEventListener('click',()=>{
   keys.forEach(k=>localStorage.removeItem(k));alert('All data cleared. Reloading…');location.reload();
 });
 
-// ── Particles: clean minimal slow-drift ──
+// ── Particles ──
 (function(){
   const canvas=document.getElementById('particle-canvas');
   const ctx=canvas.getContext('2d');
@@ -1302,50 +1475,33 @@ $('data-clear').addEventListener('click',()=>{
   const TAU=Math.PI*2;
   const COUNT=75;
   let pts=[];
-
   function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
   resize();
   window.addEventListener('resize',()=>{resize();build();});
-
   const rand=(a,b)=>a+Math.random()*(b-a);
-
   function build(){
     pts=[];
     for(let i=0;i<COUNT;i++){
-      pts.push({
-        x:rand(0,W), y:rand(0,H),
-        vx:rand(-0.18,0.18),
-        vy:rand(-0.18,0.18),
-        r:rand(1.0,2.5),
-        base:rand(0.18,0.50),
-        phase:rand(0,TAU),
-        freq:rand(0.25,0.7),
-      });
+      pts.push({x:rand(0,W),y:rand(0,H),vx:rand(-0.18,0.18),vy:rand(-0.18,0.18),r:rand(1.0,2.5),base:rand(0.18,0.50),phase:rand(0,TAU),freq:rand(0.25,0.7)});
     }
   }
   build();
-
   function loop(ts){
     ctx.clearRect(0,0,W,H);
     const t=ts*0.001;
     pts.forEach(p=>{
-      p.x+=p.vx; p.y+=p.vy;
-      // soft wrap
-      if(p.x<-4)p.x=W+4; else if(p.x>W+4)p.x=-4;
-      if(p.y<-4)p.y=H+4; else if(p.y>H+4)p.y=-4;
-      // breathe
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<-4)p.x=W+4;else if(p.x>W+4)p.x=-4;
+      if(p.y<-4)p.y=H+4;else if(p.y>H+4)p.y=-4;
       const a=p.base*(0.55+0.45*Math.sin(t*p.freq+p.phase));
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,TAU);
-      ctx.fillStyle=`rgba(255,255,255,${a})`;
-      ctx.fill();
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,TAU);ctx.fillStyle=`rgba(255,255,255,${a})`;ctx.fill();
     });
     requestAnimationFrame(loop);
   }
   requestAnimationFrame(loop);
 })();
 
-
+// ── Custom select dropdowns ──
 document.querySelectorAll('.settings-select').forEach(sel=>{
   const wrap=document.createElement('div');wrap.className='csel';
   sel.parentNode.insertBefore(wrap,sel);sel.style.display='none';wrap.appendChild(sel);
