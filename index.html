@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 <meta name="theme-color" content="#0a0a0a"/>
 <title>Universal Arcade V2</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='14' fill='%23fff'/%3E%3Cellipse cx='32' cy='32' rx='30' ry='8' fill='none' stroke='%23fff' stroke-width='3' transform='rotate(-20 32 32)'/%3E%3C/svg%3E"/>
 <meta name="description" content="Welcome To Universal Arcade! We are #1!"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
+<!-- Preconnect & resource hints for performance -->
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
 <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/></noscript>
 <style>
 :root {
@@ -35,10 +37,11 @@ body{
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
 }
-/* Particle canvas */
+/* Particle canvas - performance optimized */
 #particle-canvas{
   position:fixed;inset:0;pointer-events:none;z-index:0;
   opacity:1;
+  will-change:transform;
 }
 ::selection{background:var(--text);color:var(--bg);}
 ::-webkit-scrollbar{width:4px;height:4px;}
@@ -48,7 +51,6 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
 a{color:inherit;text-decoration:none;}
 input{font:inherit;outline:none;border:none;}
 
-/* ── Layout ── */
 .app{
   display:flex;flex-direction:column;
   min-height:100vh;
@@ -56,7 +58,6 @@ input{font:inherit;outline:none;border:none;}
   padding-bottom:var(--nav-h);
 }
 
-/* ── Bottom Nav ── */
 .bottom-nav{
   position:fixed;
   bottom:16px;
@@ -72,10 +73,7 @@ input{font:inherit;outline:none;border:none;}
   -webkit-backdrop-filter:blur(24px) saturate(180%);
   border:1px solid rgba(255,255,255,0.1);
   border-radius:22px;
-  box-shadow:
-    0 2px 0 rgba(255,255,255,0.06) inset,
-    0 20px 60px rgba(0,0,0,0.7),
-    0 4px 16px rgba(0,0,0,0.5);
+  box-shadow:0 2px 0 rgba(255,255,255,0.06) inset,0 20px 60px rgba(0,0,0,0.7),0 4px 16px rgba(0,0,0,0.5);
   will-change:transform;
 }
 .nav-item{
@@ -97,106 +95,29 @@ input{font:inherit;outline:none;border:none;}
 .nav-item.active .nav-label{display:block;font-size:12px;letter-spacing:-0.01em;}
 .nav-sep{width:1px;height:20px;background:var(--line-2);margin:0 2px;flex-shrink:0;}
 
-/* ── Pages ── */
 .page{display:none!important;}
 .page.active{display:block!important;animation:pgIn 200ms var(--ease) both;}
 @keyframes pgIn{from{opacity:0;transform:translate3d(0,6px,0);}to{opacity:1;transform:translate3d(0,0,0);}}
 body.is-home .page.active{display:flex!important;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - var(--nav-h));}
 
-/* ── Home ── */
-.home-hero{
-  width:100%;
-  display:flex;flex-direction:column;align-items:center;text-align:center;
-  padding:0 40px;gap:0;
-}
+.home-hero{width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 40px;gap:0;}
 .home-logo{width:52px;height:52px;margin-bottom:32px;opacity:0.85;}
-.home-title-row{
-  display:flex;align-items:baseline;justify-content:center;gap:10px;
-  margin-bottom:28px;
-}
-.home-title{
-  font-size:clamp(48px,8vw,96px);font-weight:700;
-  letter-spacing:-0.05em;line-height:1;color:var(--text);
-  font-family:var(--font);white-space:nowrap;
-}
-.home-v2{
-  font-family:var(--font-mono);
-  font-size:14px;font-weight:400;letter-spacing:0.06em;text-transform:uppercase;
-  color:var(--text-3);
-  line-height:1;
-  padding-bottom:0.3em;
-  flex-shrink:0;
-}
+.home-title-row{display:flex;align-items:baseline;justify-content:center;gap:10px;margin-bottom:28px;}
+.home-title{font-size:clamp(48px,8vw,96px);font-weight:700;letter-spacing:-0.05em;line-height:1;color:var(--text);font-family:var(--font);white-space:nowrap;}
+.home-v2{font-family:var(--font-mono);font-size:14px;font-weight:400;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-3);line-height:1;padding-bottom:0.3em;flex-shrink:0;}
 .home-search-wrap{position:relative;width:100%;max-width:520px;}
-.home-search-input{
-  width:100%;
-  background:rgba(18,18,18,0.85);
-  backdrop-filter:blur(24px) saturate(180%);
-  -webkit-backdrop-filter:blur(24px) saturate(180%);
-  border:1px solid rgba(255,255,255,0.1);
-  box-shadow:0 2px 0 rgba(255,255,255,0.06) inset,0 16px 48px rgba(0,0,0,0.65);
-  color:var(--text);
-  padding:17px 24px 17px 24px;text-align:center;
-  border-radius:16px;
-  font-size:15px;
-  font-family:var(--font);
-  font-weight:500;
-  outline:none;appearance:none;
-  transition:border-color var(--d-base) var(--ease),box-shadow var(--d-base) var(--ease);
-}
+.home-search-input{width:100%;background:rgba(18,18,18,0.85);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,0.1);box-shadow:0 2px 0 rgba(255,255,255,0.06) inset,0 16px 48px rgba(0,0,0,0.65);color:var(--text);padding:17px 24px;text-align:center;border-radius:16px;font-size:15px;font-family:var(--font);font-weight:500;outline:none;transition:border-color var(--d-base) var(--ease),box-shadow var(--d-base) var(--ease);}
 .home-search-input::placeholder{color:var(--text-3);}
-.home-search-input:focus{
-  border-color:rgba(255,255,255,0.18);
-  box-shadow:0 2px 0 rgba(255,255,255,0.07) inset,0 16px 48px rgba(0,0,0,0.75),0 0 0 4px rgba(255,255,255,0.04);
-}
-.home-search-icon{
-  position:absolute;left:18px;top:50%;transform:translateY(-50%);
-  width:16px;height:16px;color:var(--text-3);pointer-events:none;
-}
-/* ── Page header ── */
-.pg-header{
-  padding:64px 40px 40px;
-  width:100%;
-  display:flex;flex-direction:column;align-items:center;
-  text-align:center;gap:16px;
-}
-.pg-header-top{display:contents;}
-.pg-header-left{display:contents;}
-.pg-title{
-  font-size:clamp(52px,8vw,96px);font-weight:700;
-  letter-spacing:-0.05em;color:var(--text);line-height:1;
-  font-family:var(--font);
-}
-.pg-meta-pill{
-  font-size:15px;font-weight:600;color:var(--text-2);
-  font-family:var(--font);letter-spacing:-0.01em;
-  margin-top:-4px;
-}
-.pg-header-divider{display:none;}
-.pg-search-wrap{position:relative;width:100%;max-width:480px;}
-.pg-search-wrap input{
-  width:100%;
-  background:rgba(18,18,18,0.85);
-  backdrop-filter:blur(24px) saturate(180%);
-  -webkit-backdrop-filter:blur(24px) saturate(180%);
-  border:1px solid rgba(255,255,255,0.1);
-  box-shadow:0 2px 0 rgba(255,255,255,0.05) inset,0 8px 32px rgba(0,0,0,0.5);
-  color:var(--text);padding:15px 20px;text-align:center;
-  border-radius:14px;
-  font-size:15px;font-family:var(--font);font-weight:500;outline:none;
-  transition:border-color var(--d-base) var(--ease),box-shadow var(--d-base) var(--ease);
-}
-.pg-search-wrap input:focus{
-  border-color:rgba(255,255,255,0.18);
-  box-shadow:0 2px 0 rgba(255,255,255,0.07) inset,0 8px 32px rgba(0,0,0,0.6),0 0 0 3px rgba(255,255,255,0.04);
-}
-.pg-search-wrap input::placeholder{color:var(--text-3);}
-.pg-search-icon{
-  position:absolute;left:16px;top:50%;transform:translateY(-50%);
-  width:16px;height:16px;color:var(--text-3);pointer-events:none;
-}
+.home-search-input:focus{border-color:rgba(255,255,255,0.18);box-shadow:0 2px 0 rgba(255,255,255,0.07) inset,0 16px 48px rgba(0,0,0,0.75),0 0 0 4px rgba(255,255,255,0.04);}
 
-/* ── Game grid ── */
+.pg-header{padding:64px 40px 40px;width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;}
+.pg-title{font-size:clamp(52px,8vw,96px);font-weight:700;letter-spacing:-0.05em;color:var(--text);line-height:1;font-family:var(--font);}
+.pg-meta-pill{font-size:15px;font-weight:600;color:var(--text-2);font-family:var(--font);letter-spacing:-0.01em;margin-top:-4px;}
+.pg-search-wrap{position:relative;width:100%;max-width:480px;}
+.pg-search-wrap input{width:100%;background:rgba(18,18,18,0.85);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,0.1);box-shadow:0 2px 0 rgba(255,255,255,0.05) inset,0 8px 32px rgba(0,0,0,0.5);color:var(--text);padding:15px 20px;text-align:center;border-radius:14px;font-size:15px;font-family:var(--font);font-weight:500;outline:none;transition:border-color var(--d-base) var(--ease),box-shadow var(--d-base) var(--ease);}
+.pg-search-wrap input:focus{border-color:rgba(255,255,255,0.18);box-shadow:0 2px 0 rgba(255,255,255,0.07) inset,0 8px 32px rgba(0,0,0,0.6),0 0 0 3px rgba(255,255,255,0.04);}
+.pg-search-wrap input::placeholder{color:var(--text-3);}
+
 .pg-grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
@@ -261,200 +182,57 @@ body.is-home .page.active{display:flex!important;flex-direction:column;align-ite
   object-fit:cover;object-position:center center;display:block;
 }
 
-/* ── Empty / loading ── */
-.grid-full{grid-column:1/-1;}
-.empty{
-  grid-column:1/-1;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:80px 24px;text-align:center;gap:0;
-}
-.empty-inner{
-  background:rgba(255,255,255,0.02);
-  border:1px solid var(--line-2);
-  border-radius:20px;
-  padding:48px 52px;
-  display:flex;flex-direction:column;align-items:center;gap:0;
-  max-width:360px;
-  box-shadow:0 2px 0 rgba(255,255,255,0.04) inset;
-}
-.empty-icon{
-  width:48px;height:48px;margin-bottom:20px;
-  display:grid;place-items:center;
-  border-radius:12px;
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.08);
-  color:var(--text-3);
-}
-.empty-icon svg{width:20px;height:20px;}
-.empty-title{
-  font-size:17px;font-weight:700;letter-spacing:-0.03em;
-  color:var(--text);margin-bottom:8px;font-family:var(--font);
-  line-height:1.2;
-}
-.empty-sub{
-  font-size:13px;color:var(--text-3);
-  line-height:1.7;font-family:var(--font);
-}
+.empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;text-align:center;}
+.empty-inner{background:rgba(255,255,255,0.02);border:1px solid var(--line-2);border-radius:20px;padding:48px 52px;display:flex;flex-direction:column;align-items:center;max-width:360px;}
+.empty-icon{width:48px;height:48px;margin-bottom:20px;display:grid;place-items:center;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:var(--text-3);}
+.empty-title{font-size:17px;font-weight:700;letter-spacing:-0.03em;color:var(--text);margin-bottom:8px;}
+.empty-sub{font-size:13px;color:var(--text-3);line-height:1.7;}
 .dots{padding:80px 0;text-align:center;}
-.dots span{
-  display:inline-block;width:4px;height:4px;margin:0 3px;
-  background:var(--text-3);border-radius:50%;
-  animation:dotP 1.2s infinite ease-in-out both;
-}
+.dots span{display:inline-block;width:4px;height:4px;margin:0 3px;background:var(--text-3);border-radius:50%;animation:dotP 1.2s infinite ease-in-out both;}
 .dots span:nth-child(2){animation-delay:.15s;}
 .dots span:nth-child(3){animation-delay:.30s;}
 @keyframes dotP{0%,80%,100%{opacity:.15;transform:scale(.75);}40%{opacity:1;transform:scale(1);}}
 
-/* ── Emulators ── */
-.emu-back-btn{
-  display:none;align-items:center;gap:7px;
-  padding:8px 16px 8px 12px;
-  background:rgba(255,255,255,0.05);
-  border:1px solid var(--line-2);
-  border-radius:10px;
-  font-size:13px;font-weight:500;color:var(--text-3);
-  font-family:var(--font);letter-spacing:-0.01em;
-  transition:all var(--d-fast) var(--ease);
-  margin-bottom:8px;
-}
+.emu-back-btn{display:none;align-items:center;gap:7px;padding:8px 16px 8px 12px;background:rgba(255,255,255,0.05);border:1px solid var(--line-2);border-radius:10px;font-size:13px;font-weight:500;color:var(--text-3);transition:all var(--d-fast) var(--ease);margin-bottom:8px;}
 .emu-back-btn.show{display:inline-flex;}
 .emu-back-btn:hover{background:rgba(255,255,255,0.08);border-color:var(--line-3);color:var(--text-2);}
 .emu-back-btn svg{width:14px;height:14px;}
-.emu-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));
-  gap:12px;padding:8px 48px 80px;max-width:1440px;margin:0 auto;width:100%;
-}
-.emu-card{
-  aspect-ratio:1/1;border-radius:12px;overflow:hidden;
-  position:relative;cursor:pointer;
-  border:1px solid var(--line);background:var(--bg-2);
-  transition:transform var(--d-base) var(--ease),border-color var(--d-base) var(--ease),box-shadow var(--d-base) var(--ease);
-}
-.emu-card:hover{
-  transform:translateY(-4px) scale(1.01);
-  border-color:var(--line-3);
-  box-shadow:0 12px 40px rgba(0,0,0,0.6);
-}
-.emu-card-inner{
-  position:absolute;inset:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;text-align:center;padding:16px;
-}
-.emu-short{
-  font-size:24px;font-weight:700;letter-spacing:-0.04em;
-  color:var(--text);line-height:1;margin-bottom:5px;font-family:var(--font);
-}
+.emu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:12px;padding:8px 48px 80px;max-width:1440px;margin:0 auto;width:100%;}
+.emu-card{aspect-ratio:1/1;border-radius:12px;overflow:hidden;position:relative;cursor:pointer;border:1px solid var(--line);background:var(--bg-2);transition:transform var(--d-base) var(--ease),border-color var(--d-base) var(--ease),box-shadow var(--d-base) var(--ease);}
+.emu-card:hover{transform:translateY(-4px) scale(1.01);border-color:var(--line-3);box-shadow:0 12px 40px rgba(0,0,0,0.6);}
+.emu-card-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;}
+.emu-short{font-size:24px;font-weight:700;letter-spacing:-0.04em;color:var(--text);line-height:1;margin-bottom:5px;}
 .emu-name{font-size:10px;font-weight:500;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;letter-spacing:0.02em;}
-.emu-count{
-  display:inline-flex;align-items:center;justify-content:center;
-  margin-top:10px;padding:3px 9px;
-  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.05);
-  border-radius:99px;font-size:10px;font-weight:600;color:var(--text-3);
-  font-family:var(--font-mono);letter-spacing:0.04em;
-}
+.emu-count{display:inline-flex;align-items:center;justify-content:center;margin-top:10px;padding:3px 9px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.05);border-radius:99px;font-size:10px;font-weight:600;color:var(--text-3);font-family:var(--font-mono);letter-spacing:0.04em;}
 
-/* ── Settings ── */
-.settings-body{
-  padding:0 0 100px;
-  max-width:1000px;margin:0 auto;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-}
-.settings-section{
-  padding:48px 56px;
-  border-bottom:1px solid rgba(255,255,255,0.07);
-  background:none;border-radius:0;overflow:visible;
-  display:flex;flex-direction:column;gap:20px;
-}
-.settings-section:nth-child(odd){
-  border-right:1px solid rgba(255,255,255,0.07);
-}
+.settings-body{padding:0 0 100px;max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;}
+.settings-section{padding:48px 56px;border-bottom:1px solid rgba(255,255,255,0.07);background:none;border-radius:0;overflow:visible;display:flex;flex-direction:column;gap:20px;}
+.settings-section:nth-child(odd){border-right:1px solid rgba(255,255,255,0.07);}
 .settings-head{padding:0;border:none;background:none;}
-.settings-head h2{
-  font-size:22px;font-weight:700;color:var(--text);
-  letter-spacing:-0.03em;font-family:var(--font);
-  line-height:1;text-transform:lowercase;
-}
-.settings-head p{
-  display:block;
-  font-size:13px;color:var(--text-3);
-  font-family:var(--font);line-height:1.5;
-  margin-top:6px;
-}
-.settings-row{
-  display:flex;flex-direction:column;gap:10px;
-  padding:0;border:none;min-height:unset;
-}
-.settings-row-info{display:none;}
-.settings-label{
-  font-size:13px;font-weight:400;color:var(--text-2);
-  font-family:var(--font);letter-spacing:-0.01em;
-  display:block;
-}
-.settings-desc{display:none;}
+.settings-head h2{font-size:22px;font-weight:700;color:var(--text);letter-spacing:-0.03em;font-family:var(--font);line-height:1;text-transform:lowercase;}
+.settings-head p{display:block;font-size:13px;color:var(--text-3);font-family:var(--font);line-height:1.5;margin-top:6px;}
+.settings-row{display:flex;flex-direction:column;gap:10px;padding:0;border:none;min-height:unset;}
+.settings-label{font-size:13px;font-weight:400;color:var(--text-2);font-family:var(--font);letter-spacing:-0.01em;display:block;}
 .settings-control{display:flex;justify-content:flex-start;align-items:center;width:100%;}
-.settings-select,.settings-input{
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.09);
-  color:var(--text);padding:10px 14px;border-radius:9px;
-  font-size:13px;font-family:var(--font);outline:none;
-  width:100%;max-width:280px;
-  transition:border-color var(--d-fast) var(--ease),background var(--d-fast) var(--ease);
-}
-.settings-select{
-  appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:28px;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23777' stroke-width='2.5'><polyline points='6 9 12 15 18 9'/></svg>");
-  background-repeat:no-repeat;background-position:right 10px center;
-}
+.settings-select,.settings-input{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);color:var(--text);padding:10px 14px;border-radius:9px;font-size:13px;font-family:var(--font);outline:none;width:100%;max-width:280px;transition:border-color var(--d-fast) var(--ease),background var(--d-fast) var(--ease);}
+.settings-select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:28px;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23777' stroke-width='2.5'><polyline points='6 9 12 15 18 9'/></svg>");background-repeat:no-repeat;background-position:right 10px center;}
 .settings-input::placeholder{color:var(--text-3);}
-.settings-select:focus,.settings-input:focus{
-  border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);
-}
-.settings-input.panic-key-btn{
-  cursor:pointer;text-align:left;width:auto;max-width:280px;
-  font-family:var(--font);font-weight:400;font-size:13px;
-  color:var(--text-2);background:none;border:none;padding:0;
-  letter-spacing:-0.01em;border-radius:0;
-}
+.settings-select:focus,.settings-input:focus{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);}
+.settings-input.panic-key-btn{cursor:pointer;text-align:left;width:auto;max-width:280px;font-family:var(--font);font-weight:400;font-size:13px;color:var(--text-2);background:none;border:none;padding:0;letter-spacing:-0.01em;border-radius:0;}
 .settings-input.panic-key-btn:hover{color:var(--text);background:none;border:none;}
 .settings-input.panic-key-btn.listening{color:var(--text-3);}
-.settings-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:10px 18px;border-radius:9px;
-  font-size:13px;font-weight:500;font-family:var(--font);
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.09);
-  color:var(--text-2);letter-spacing:-0.01em;
-  transition:all var(--d-fast) var(--ease);cursor:pointer;white-space:nowrap;
-}
+.settings-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:9px;font-size:13px;font-weight:500;font-family:var(--font);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);color:var(--text-2);letter-spacing:-0.01em;transition:all var(--d-fast) var(--ease);cursor:pointer;white-space:nowrap;}
 .settings-btn:hover{background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.16);color:var(--text);}
 .settings-btn.primary{background:rgba(255,255,255,0.9);border-color:transparent;color:#000;font-weight:600;}
 .settings-btn.primary:hover{background:#fff;}
 .settings-btn svg{width:13px;height:13px;}
 .settings-btn-group{display:flex;gap:8px;flex-wrap:wrap;}
-.settings-toggle{
-  display:inline-flex;align-items:center;gap:12px;
-  background:none;border:none;cursor:pointer;padding:0;
-}
-.settings-toggle-track{
-  width:44px;height:26px;border-radius:99px;
-  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.12);
-  position:relative;flex-shrink:0;
-  transition:background var(--d-base) var(--ease);
-}
-.settings-toggle-thumb{
-  position:absolute;left:3px;top:50%;transform:translateY(-50%);
-  width:18px;height:18px;border-radius:50%;
-  background:var(--text-3);
-  box-shadow:0 1px 4px rgba(0,0,0,0.5);
-  transition:left var(--d-base) var(--ease-back),background var(--d-fast) var(--ease);
-}
+.settings-toggle{display:inline-flex;align-items:center;gap:12px;background:none;border:none;cursor:pointer;padding:0;}
+.settings-toggle-track{width:44px;height:26px;border-radius:99px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.12);position:relative;flex-shrink:0;transition:background var(--d-base) var(--ease);}
+.settings-toggle-thumb{position:absolute;left:3px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:var(--text-3);box-shadow:0 1px 4px rgba(0,0,0,0.5);transition:left var(--d-base) var(--ease-back),background var(--d-fast) var(--ease);}
 .settings-toggle[aria-pressed="true"] .settings-toggle-track{background:rgba(255,255,255,0.85);border-color:transparent;}
 .settings-toggle[aria-pressed="true"] .settings-toggle-thumb{left:21px;background:#111;}
-.settings-toggle-label{
-  font-size:13px;color:var(--text-3);font-family:var(--font);
-  display:block;letter-spacing:-0.01em;
-}
-.settings-row.danger{}
+.settings-toggle-label{font-size:13px;color:var(--text-3);font-family:var(--font);display:block;letter-spacing:-0.01em;}
 .settings-btn.danger{color:rgba(255,75,75,0.75);border-color:rgba(255,60,60,0.2);background:rgba(255,50,50,0.04);}
 .settings-btn.danger:hover{background:rgba(255,50,50,0.09);color:rgba(255,90,90,0.95);border-color:rgba(255,60,60,0.35);}
 @media(max-width:700px){
@@ -463,15 +241,6 @@ body.is-home .page.active{display:flex!important;flex-direction:column;align-ite
   .settings-section{padding:36px 28px;}
 }
 
-/* ── Changelog ── */
-.changelog-wrap{padding:0 48px 60px;max-width:700px;margin:0 auto;}
-.changelog-entry{padding:24px 0;border-bottom:1px solid var(--line);}
-.changelog-entry:last-child{border-bottom:none;}
-.changelog-date{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;font-family:var(--font-mono);}
-.changelog-title{font-size:20px;font-weight:700;letter-spacing:-0.03em;color:var(--text);margin-bottom:8px;}
-.changelog-body{font-size:13.5px;color:var(--text-2);line-height:1.65;}
-
-/* ── Game View Overlay ── */
 .game-view{
   display:none;
   position:fixed;inset:0;z-index:200;
@@ -486,7 +255,6 @@ body.in-game{overflow:hidden;}
 body.in-game .game-view{display:flex;}
 body.in-game .app{display:none;}
 
-/* Game frame — centered rounded box */
 .game-stage{
   width:100%;
   flex:1;
@@ -502,7 +270,6 @@ body.in-game .app{display:none;}
   position:absolute;inset:0;
 }
 
-/* Floating toolbar — below the game frame */
 .game-topbar{
   flex-shrink:0;
   display:flex;align-items:center;gap:4px;
@@ -533,7 +300,6 @@ body.in-game .app{display:none;}
 .gtb-btn.active svg{fill:currentColor;}
 .gtb-close:hover{color:rgba(255,90,90,0.9);border-color:rgba(255,80,80,0.2);background:rgba(255,80,80,0.08);}
 
-/* Loader */
 .game-loader{
   position:absolute;inset:0;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -548,7 +314,6 @@ body.in-game .app{display:none;}
   opacity:0;
   pointer-events:none;
 }
-/* Spinner ring */
 .loader-spinner{
   width:48px;height:48px;
   border-radius:50%;
@@ -559,7 +324,6 @@ body.in-game .app{display:none;}
   will-change:transform;
 }
 @keyframes loaderSpin{to{transform:rotate(360deg);}}
-/* Game title */
 .loader-title{
   font-size:15px;font-weight:600;
   color:var(--text-2);
@@ -568,7 +332,6 @@ body.in-game .app{display:none;}
   font-family:var(--font);
   line-height:1.3;
 }
-/* Progress bar */
 .loader-bar-wrap{
   width:200px;height:2px;
   background:rgba(255,255,255,0.07);
@@ -589,53 +352,22 @@ body.in-game .app{display:none;}
   100%{width:95%;}
 }
 
-.game-info-bar{display:none;}
-.game-info-inner{display:none;}
-.game-info-tag{display:none;}
-
-/* ── Themes ── */
 body.theme-purple{--bg:#0a0810;--bg-2:#110e18;--bg-3:#181420;--bg-4:#1f1a29;--line:rgba(160,120,255,0.05);--line-2:rgba(160,120,255,0.09);--line-3:rgba(160,120,255,0.16);}
 body.theme-blue{--bg:#060a10;--bg-2:#0b1018;--bg-3:#0f1620;--bg-4:#131d29;--line:rgba(80,140,255,0.05);--line-2:rgba(80,140,255,0.09);--line-3:rgba(80,140,255,0.16);}
 body.theme-green{--bg:#060a07;--bg-2:#0a100b;--bg-3:#0f160f;--bg-4:#131d14;--line:rgba(80,200,100,0.05);--line-2:rgba(80,200,100,0.09);--line-3:rgba(80,200,100,0.16);}
 body.theme-red{--bg:#0e0606;--bg-2:#150909;--bg-3:#1b0d0d;--bg-4:#201111;--line:rgba(255,80,80,0.05);--line-2:rgba(255,80,80,0.09);--line-3:rgba(255,80,80,0.16);}
 body.theme-amoled{--bg:#000;--bg-2:#040404;--bg-3:#080808;--bg-4:#0e0e0e;--line:rgba(255,255,255,0.04);--line-2:rgba(255,255,255,0.07);--line-3:rgba(255,255,255,0.12);}
 
-/* ── Custom select ── */
 .csel{position:relative;width:100%;max-width:280px;user-select:none;-webkit-user-select:none;}
 .settings-section .csel{max-width:100%;}
-.csel-trigger{
-  display:flex;align-items:center;justify-content:space-between;gap:8px;
-  padding:10px 14px;
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.09);
-  border-radius:9px;cursor:pointer;
-  font-size:13px;font-family:var(--font);color:var(--text);
-  transition:background var(--d-fast) var(--ease),border-color var(--d-fast) var(--ease);
-}
-.csel-trigger:hover,.csel.open .csel-trigger{
-  background:rgba(255,255,255,0.07);
-  border-color:rgba(255,255,255,0.15);
-}
+.csel-trigger{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:9px;cursor:pointer;font-size:13px;font-family:var(--font);color:var(--text);transition:background var(--d-fast) var(--ease),border-color var(--d-fast) var(--ease);}
+.csel-trigger:hover,.csel.open .csel-trigger{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.15);}
 .csel-trigger svg{width:12px;height:12px;color:var(--text-3);flex-shrink:0;transition:transform var(--d-base) var(--ease);}
 .csel.open .csel-trigger svg{transform:rotate(180deg);}
 .csel-val{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.csel-list{
-  position:absolute;top:calc(100% + 6px);left:0;right:0;
-  background:#161616;
-  border:1px solid rgba(255,255,255,0.12);
-  border-radius:12px;z-index:300;
-  overflow:hidden;display:none;
-  box-shadow:0 12px 40px rgba(0,0,0,0.9),0 2px 8px rgba(0,0,0,0.6);
-}
+.csel-list{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#161616;border:1px solid rgba(255,255,255,0.12);border-radius:12px;z-index:300;overflow:hidden;display:none;box-shadow:0 12px 40px rgba(0,0,0,0.9),0 2px 8px rgba(0,0,0,0.6);}
 .csel.open .csel-list{display:block;}
-.csel-opt{
-  padding:11px 16px;
-  font-size:13px;font-family:var(--font);
-  color:#ccc;cursor:pointer;
-  transition:background var(--d-fast) var(--ease),color var(--d-fast) var(--ease);
-  border-bottom:1px solid rgba(255,255,255,0.05);
-  letter-spacing:-0.01em;
-}
+.csel-opt{padding:11px 16px;font-size:13px;font-family:var(--font);color:#ccc;cursor:pointer;transition:background var(--d-fast) var(--ease),color var(--d-fast) var(--ease);border-bottom:1px solid rgba(255,255,255,0.05);letter-spacing:-0.01em;}
 .csel-opt:last-child{border-bottom:none;}
 .csel-opt:first-child{border-radius:12px 12px 0 0;}
 .csel-opt:hover{background:rgba(255,255,255,0.08);color:#fff;}
@@ -650,7 +382,6 @@ body.theme-amoled{--bg:#000;--bg-2:#040404;--bg-3:#080808;--bg-4:#0e0e0e;--line:
   .pg-grid{padding:16px 20px 48px;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));}
   .emu-grid{padding:16px 20px 48px;}
   .settings-body{grid-template-columns:1fr;padding:0 20px 60px;}
-  .changelog-wrap{padding:0 20px 60px;}
 }
 @media(hover:none){.pg-card:hover,.emu-card:hover,.home-chip:hover{transform:none!important;}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
@@ -661,8 +392,6 @@ body.theme-amoled{--bg:#000;--bg-2:#040404;--bg-3:#080808;--bg-4:#0e0e0e;--line:
 <canvas id="particle-canvas"></canvas>
 
 <div class="app">
-
-  <!-- Bottom Navigation -->
   <nav class="bottom-nav" role="navigation">
     <button class="nav-item active" data-page="home" title="Home">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -688,199 +417,63 @@ body.theme-amoled{--bg:#000;--bg-2:#040404;--bg-3:#080808;--bg-4:#0e0e0e;--line:
   </nav>
 
   <!-- Pages -->
-
-  <!-- Home -->
   <div class="page active" id="page-home">
     <div class="home-hero">
-      <svg class="home-logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="32" cy="32" r="14" fill="#fff"/>
-        <ellipse cx="32" cy="32" rx="30" ry="8" fill="none" stroke="#fff" stroke-width="3" transform="rotate(-20 32 32)"/>
-      </svg>
-      <div class="home-title-row">
-        <h1 class="home-title">Universal Arcade</h1>
-        <span class="home-v2">V2</span>
-      </div>
-      <div class="home-search-wrap">
-        <input id="hero-search-input" class="home-search-input" type="text" placeholder="Search for a game…" autocomplete="off" spellcheck="false"/>
-      </div>
+      <svg class="home-logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="14" fill="#fff"/><ellipse cx="32" cy="32" rx="30" ry="8" fill="none" stroke="#fff" stroke-width="3" transform="rotate(-20 32 32)"/></svg>
+      <div class="home-title-row"><h1 class="home-title">Universal Arcade</h1><span class="home-v2">V2</span></div>
+      <div class="home-search-wrap"><input id="hero-search-input" class="home-search-input" type="text" placeholder="Search for a game…" autocomplete="off" spellcheck="false"/></div>
     </div>
   </div>
 
-  <!-- Games -->
   <div class="page" id="page-games">
-    <div class="pg-header">
-      <h1 class="pg-title">Games</h1>
-      <span class="pg-meta-pill" id="games-count">loading…</span>
-      <div class="pg-search-wrap">
-        <input id="games-search" type="text" placeholder="Search games…" autocomplete="off" spellcheck="false"/>
-      </div>
-    </div>
+    <div class="pg-header"><h1 class="pg-title">Games</h1><span class="pg-meta-pill" id="games-count">loading…</span><div class="pg-search-wrap"><input id="games-search" type="text" placeholder="Search games…" autocomplete="off" spellcheck="false"/></div></div>
     <div class="pg-grid" id="games-grid"><div class="dots grid-full"><span></span><span></span><span></span></div></div>
   </div>
 
-  <!-- Favorites -->
   <div class="page" id="page-favorites">
-    <div class="pg-header">
-      <h1 class="pg-title">Favorites</h1>
-      <span class="pg-meta-pill">Your saved games</span>
-    </div>
+    <div class="pg-header"><h1 class="pg-title">Favorites</h1><span class="pg-meta-pill">Your saved games</span></div>
     <div class="pg-grid" id="favorites-grid"></div>
   </div>
 
-  <!-- Emulators -->
   <div class="page" id="page-emulators">
-    <div class="pg-header">
-      <button class="emu-back-btn" id="emu-back">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
-        All Consoles
-      </button>
-      <h1 class="pg-title" id="emu-title">Emulation</h1>
-      <span class="pg-meta-pill">Play retro games in your browser</span>
-    </div>
+    <div class="pg-header"><button class="emu-back-btn" id="emu-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg> All Consoles</button><h1 class="pg-title" id="emu-title">Emulation</h1><span class="pg-meta-pill">Play retro games in your browser</span></div>
     <div class="emu-grid" id="emulators-grid"><div class="dots"><span></span><span></span><span></span></div></div>
   </div>
 
-  <!-- Settings -->
   <div class="page" id="page-settings">
-    <div class="pg-header">
-      <h1 class="pg-title">Settings</h1>
-      <span class="pg-meta-pill">Customize your experience</span>
-    </div>
+    <div class="pg-header"><h1 class="pg-title">Settings</h1><span class="pg-meta-pill">Customize your experience</span></div>
     <div class="settings-body">
-
       <section class="settings-section">
-        <header class="settings-head">
-          <h2>tab cloak</h2>
-          <p>disguise the tab title and icon</p>
-        </header>
-        <div class="settings-row">
-          <label class="settings-label" for="cloak-preset">disguise as:</label>
-          <div class="settings-control">
-            <select id="cloak-preset" class="settings-select">
-              <option value="none">none (default)</option>
-              <option value="google">Google</option>
-              <option value="classroom">Google Classroom</option>
-              <option value="docs">Google Docs</option>
-              <option value="drive">Google Drive</option>
-              <option value="khan">Khan Academy</option>
-              <option value="schoology">Schoology</option>
-              <option value="canvas">Canvas LMS</option>
-              <option value="wiki">Wikipedia</option>
-              <option value="custom">custom…</option>
-            </select>
-          </div>
-        </div>
-        <div class="settings-row" id="cloak-custom-row" style="display:none;">
-          <label class="settings-label" for="cloak-title">custom title:</label>
-          <div class="settings-control"><input id="cloak-title" class="settings-input" type="text" placeholder="page title…"/></div>
-        </div>
-        <div class="settings-row" id="cloak-favicon-row" style="display:none;">
-          <label class="settings-label" for="cloak-favicon">favicon url:</label>
-          <div class="settings-control"><input id="cloak-favicon" class="settings-input" type="text" placeholder="https://…/favicon.ico"/></div>
-        </div>
-        <div class="settings-row">
-          <div class="settings-control"><button class="settings-btn" id="cloak-reset-btn" type="button">reset cloak</button></div>
-        </div>
+        <header class="settings-head"><h2>tab cloak</h2><p>disguise the tab title and icon</p></header>
+        <div class="settings-row"><label class="settings-label" for="cloak-preset">disguise as:</label><div class="settings-control"><select id="cloak-preset" class="settings-select"><option value="none">none (default)</option><option value="google">Google</option><option value="classroom">Google Classroom</option><option value="docs">Google Docs</option><option value="drive">Google Drive</option><option value="khan">Khan Academy</option><option value="schoology">Schoology</option><option value="canvas">Canvas LMS</option><option value="wiki">Wikipedia</option><option value="custom">custom…</option></select></div></div>
+        <div class="settings-row" id="cloak-custom-row" style="display:none;"><label class="settings-label" for="cloak-title">custom title:</label><div class="settings-control"><input id="cloak-title" class="settings-input" type="text" placeholder="page title…"/></div></div>
+        <div class="settings-row" id="cloak-favicon-row" style="display:none;"><label class="settings-label" for="cloak-favicon">favicon url:</label><div class="settings-control"><input id="cloak-favicon" class="settings-input" type="text" placeholder="https://…/favicon.ico"/></div></div>
+        <div class="settings-row"><div class="settings-control"><button class="settings-btn" id="cloak-reset-btn" type="button">reset cloak</button></div></div>
       </section>
-
       <section class="settings-section">
-        <header class="settings-head">
-          <h2>panic key</h2>
-          <p>press a key anywhere to instantly redirect away</p>
-        </header>
-        <div class="settings-row">
-          <label class="settings-label">your key: <span id="panic-key-display" style="font-family:var(--font-mono);color:var(--text);">—</span></label>
-          <div class="settings-control">
-            <button class="settings-input panic-key-btn" id="panic-key-btn" type="button">click any key to change</button>
-          </div>
-        </div>
-        <div class="settings-row">
-          <label class="settings-label" for="panic-url">redirect to:</label>
-          <div class="settings-control"><input id="panic-url" class="settings-input" type="text" placeholder="https://classroom.google.com" value="https://classroom.google.com"/></div>
-        </div>
-        <div class="settings-row">
-          <div class="settings-control">
-            <button class="settings-toggle" id="panic-toggle" type="button" aria-pressed="false">
-              <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
-              <span class="settings-toggle-label">enable panic key</span>
-            </button>
-          </div>
-        </div>
+        <header class="settings-head"><h2>panic key</h2><p>press a key anywhere to instantly redirect away</p></header>
+        <div class="settings-row"><label class="settings-label">your key: <span id="panic-key-display" style="font-family:var(--font-mono);color:var(--text);">—</span></label><div class="settings-control"><button class="settings-input panic-key-btn" id="panic-key-btn" type="button">click any key to change</button></div></div>
+        <div class="settings-row"><label class="settings-label" for="panic-url">redirect to:</label><div class="settings-control"><input id="panic-url" class="settings-input" type="text" placeholder="https://classroom.google.com" value="https://classroom.google.com"/></div></div>
+        <div class="settings-row"><div class="settings-control"><button class="settings-toggle" id="panic-toggle" type="button" aria-pressed="false"><span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span><span class="settings-toggle-label">enable panic key</span></button></div></div>
       </section>
-
       <section class="settings-section">
-        <header class="settings-head">
-          <h2>theme</h2>
-          <p>change the color scheme of the site</p>
-        </header>
-        <div class="settings-row">
-          <label class="settings-label" for="theme-select">color:</label>
-          <div class="settings-control">
-            <select id="theme-select" class="settings-select">
-              <option value="default">midnight (default)</option>
-              <option value="purple">violet</option>
-              <option value="blue">ocean</option>
-              <option value="green">forest</option>
-              <option value="red">crimson</option>
-              <option value="amoled">amoled black</option>
-            </select>
-          </div>
-        </div>
+        <header class="settings-head"><h2>theme</h2><p>change the color scheme of the site</p></header>
+        <div class="settings-row"><label class="settings-label" for="theme-select">color:</label><div class="settings-control"><select id="theme-select" class="settings-select"><option value="default">midnight (default)</option><option value="purple">violet</option><option value="blue">ocean</option><option value="green">forest</option><option value="red">crimson</option><option value="amoled">amoled black</option></select></div></div>
       </section>
-
       <section class="settings-section">
-        <header class="settings-head">
-          <h2>about:blank</h2>
-          <p>open site in a blank tab to hide from history</p>
-        </header>
-        <div class="settings-row">
-          <div class="settings-control">
-            <button class="settings-btn primary" id="ab-open" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-              open in about:blank
-            </button>
-          </div>
-        </div>
+        <header class="settings-head"><h2>about:blank</h2><p>open site in a blank tab to hide from history</p></header>
+        <div class="settings-row"><div class="settings-control"><button class="settings-btn primary" id="ab-open" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> open in about:blank</button></div></div>
       </section>
-
       <section class="settings-section">
-        <header class="settings-head">
-          <h2>data</h2>
-          <p>export, import, or delete your saved data</p>
-        </header>
-        <div class="settings-row">
-          <div class="settings-control">
-            <div class="settings-btn-group">
-              <button class="settings-btn" id="data-export" type="button">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                download backup
-              </button>
-              <button class="settings-btn" id="data-import" type="button">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                upload backup
-              </button>
-              <input type="file" id="data-import-file" accept=".json" style="display:none"/>
-            </div>
-          </div>
-        </div>
-        <div class="settings-row">
-          <div class="settings-control">
-            <button class="settings-btn danger" id="data-clear" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-              delete everything
-            </button>
-          </div>
-        </div>
+        <header class="settings-head"><h2>data</h2><p>export, import, or delete your saved data</p></header>
+        <div class="settings-row"><div class="settings-control"><div class="settings-btn-group"><button class="settings-btn" id="data-export" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> download backup</button><button class="settings-btn" id="data-import" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> upload backup</button><input type="file" id="data-import-file" accept=".json" style="display:none"/></div></div></div>
+        <div class="settings-row"><div class="settings-control"><button class="settings-btn danger" id="data-clear" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> delete everything</button></div></div>
       </section>
-
     </div>
   </div>
-</div><!-- end .app -->
+</div>
 
-<!-- ── Game View ── -->
 <div class="game-view" id="game-view" aria-hidden="true">
-
-  <!-- Game frame -->
   <div class="game-stage" id="game-stage">
     <div class="game-loader" id="game-loader">
       <div class="loader-spinner"></div>
@@ -888,26 +481,13 @@ body.theme-amoled{--bg:#000;--bg-2:#040404;--bg-3:#080808;--bg-4:#0e0e0e;--line:
       <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
     </div>
   </div>
-
-  <!-- Toolbar below game frame -->
   <div class="game-topbar" id="game-topbar">
-    <button class="gtb-btn" id="fs-btn" title="Fullscreen">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
-    </button>
-    <button class="gtb-btn" id="reload-btn" title="Reload">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
-    </button>
-    <button class="gtb-btn" id="newtab-btn" title="Open in new tab">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
-    </button>
-    <button class="gtb-btn" id="fav-btn" title="Favorite">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-    </button>
-    <button class="gtb-btn gtb-close" id="close-btn" title="Close (Esc)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
+    <button class="gtb-btn" id="fs-btn" title="Fullscreen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg></button>
+    <button class="gtb-btn" id="reload-btn" title="Reload"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg></button>
+    <button class="gtb-btn" id="newtab-btn" title="Open in new tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></button>
+    <button class="gtb-btn" id="fav-btn" title="Favorite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></button>
+    <button class="gtb-btn gtb-close" id="close-btn" title="Close (Esc)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
   </div>
-
   <div id="game-topbar-title" style="display:none;"></div>
 </div>
 
@@ -940,7 +520,6 @@ function cardHtml(g){
 }
 function renderChunked(grid,list){
   if(!grid)return;
-  // Clear with replaceChildren for better perf than innerHTML=''
   grid.replaceChildren();
   if(!list.length)return;
   const CHUNK=50;let i=0;
@@ -980,7 +559,6 @@ function goPage(name){
   try{window.scrollTo({top:0,behavior:'instant'});}catch(e){}
 }
 
-// Initial state
 document.body.classList.add('is-home');
 _pages.forEach(p=>{p.style.display=p.id==='page-home'?'block':'none';});
 
@@ -1021,7 +599,6 @@ function renderFavs(){
   renderChunked(grid,list);
 }
 
-// Delegation
 document.addEventListener('click',e=>{
   const cc=e.target.closest('.emu-card[data-console]');
   if(cc&&!e.target.closest('.pg-card')){currentConsole=cc.dataset.console;renderEmuGames(currentConsole);return;}
@@ -1052,13 +629,11 @@ $('games-search').addEventListener('input',debounce(e=>{gamesQ=e.target.value.tr
 function showLoader(title){
   const l=$('game-loader'),lt=$('game-loader-title'),bar=$('loader-bar');
   if(!l)return;
-  // reset
   l.style.display='flex';
   l.style.opacity='1';
   l.classList.remove('hidden');
   l.style.pointerEvents='none';
   if(lt)lt.textContent=title||'';
-  // restart progress bar animation by replacing the element
   if(bar){
     const clone=bar.cloneNode(true);
     bar.parentNode.replaceChild(clone,bar);
@@ -1068,9 +643,7 @@ function hideLoader(){
   const l=$('game-loader');if(!l)return;
   l.classList.add('hidden');
   setTimeout(()=>{
-    if(l.classList.contains('hidden')){
-      l.style.display='none';
-    }
+    if(l.classList.contains('hidden')) l.style.display='none';
   },420);
 }
 function resetLoader(){
@@ -1079,7 +652,6 @@ function resetLoader(){
   l.style.display='flex';
   l.style.opacity='1';
   l.classList.remove('hidden');
-  // reset bar
   if(bar){
     const clone=bar.cloneNode(true);
     bar.parentNode.replaceChild(clone,bar);
@@ -1098,7 +670,6 @@ function openGame(g){
   iframe.allowFullscreen=true;
   iframe.setAttribute('loading','eager');
   iframe.style.cssText='width:100%;height:100%;border:0;display:block;transform:translateZ(0);will-change:transform;position:absolute;inset:0;';
-  // Append first, then set src - avoids extra reflow
   stage.appendChild(iframe);
   iframe.addEventListener('load',hideLoader,{once:true});
   iframe.src=g.src;
@@ -1111,13 +682,11 @@ function closeGame(){
   document.body.classList.remove('in-game');
   $('game-view').setAttribute('aria-hidden','true');
   if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
-  // Kill iframe immediately to stop audio/network
   if(currentIframe){
     try{currentIframe.src='about:blank';}catch(e){}
     currentIframe.remove();
     currentIframe=null;
   }
-  // Cleanup any stale iframes
   $('game-stage').querySelectorAll('iframe').forEach(f=>f.remove());
   currentGame=null;
   goPage(currentPage);
@@ -1187,7 +756,6 @@ async function init(){
 }
 init();
 
-// ── Tab Cloak ──
 const CLOAK_PRESETS={
   none:{title:'Universal Arcade',favicon:''},
   google:{title:'Google',favicon:'https://www.google.com/favicon.ico'},
@@ -1220,7 +788,6 @@ function applyCloak(preset,customTitle,customFavicon){
   sel.addEventListener('change',()=>{store.set('ua-cloak',sel.value);syncCustom();applyCloak(sel.value,tInp?.value||'',fInp?.value||'');});
   tInp?.addEventListener('input',()=>{store.set('ua-cloak-title',tInp.value);applyCloak(sel.value,tInp.value,fInp?.value||'');});
   fInp?.addEventListener('input',()=>{store.set('ua-cloak-favicon',fInp.value);applyCloak(sel.value,tInp?.value||'',fInp.value);});
-  // reset cloak btn
   document.getElementById('cloak-reset-btn')?.addEventListener('click',()=>{
     store.set('ua-cloak','none');store.set('ua-cloak-title','');store.set('ua-cloak-favicon','');
     if(sel)sel.value='none';sel?.dispatchEvent(new Event('change'));
@@ -1229,7 +796,6 @@ function applyCloak(preset,customTitle,customFavicon){
   });
 })();
 
-// ── Panic Key ──
 let panicEnabled=store.get('ua-panic-on','0')==='1';
 let panicKey=store.get('ua-panic-key','`');
 let panicUrl=store.get('ua-panic-url','https://classroom.google.com');
@@ -1239,9 +805,7 @@ const keyDisplay=k=>!k?'—':k===' '?'Space':k.length===1?k.toUpperCase():k;
   if(disp)disp.textContent=keyDisplay(panicKey);
   if(urlInp)urlInp.value=panicUrl;
   if(tog){
-    const sync=()=>{
-      tog.setAttribute('aria-pressed',panicEnabled?'true':'false');
-    };
+    const sync=()=>{tog.setAttribute('aria-pressed',panicEnabled?'true':'false');};
     sync();
     tog.addEventListener('click',()=>{panicEnabled=!panicEnabled;store.set('ua-panic-on',panicEnabled?'1':'0');sync();});
   }
@@ -1269,7 +833,6 @@ document.addEventListener('keydown',e=>{
   e.preventDefault();e.stopImmediatePropagation();window.location.replace(panicUrl);
 },true);
 
-// ── about:blank ──
 $('ab-open').addEventListener('click',()=>{
   const w=window.open('about:blank','_blank');
   if(!w){alert('Popup blocked — please allow popups for this site.');return;}
@@ -1286,7 +849,6 @@ $('ab-open').addEventListener('click',()=>{
   w.document.close();
 });
 
-// ── Theme ──
 const THEMES=['default','purple','blue','green','red','amoled'];
 (function initTheme(){
   const saved=store.get('ua-theme','default');
@@ -1301,13 +863,11 @@ const THEMES=['default','purple','blue','green','red','amoled'];
   }
 })();
 
-// ── URL Cloak (apply saved on load only) ──
 (function initUrlCloak(){
   const saved=store.get('ua-url-cloak','');
   if(saved){try{history.replaceState(null,'',saved);}catch{}}
 })();
 
-// ── Data ──
 $('data-export').addEventListener('click',()=>{
   const data={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.startsWith('ua-'))data[k]=localStorage.getItem(k);}
   const a=document.createElement('a');
@@ -1331,14 +891,13 @@ $('data-clear').addEventListener('click',()=>{
   keys.forEach(k=>localStorage.removeItem(k));alert('All data cleared. Reloading…');location.reload();
 });
 
-// ── Particles ──
 (function(){
   const canvas=document.getElementById('particle-canvas');
   if(!canvas)return;
   const ctx=canvas.getContext('2d',{alpha:true,desynchronized:true});
   let W,H,rafId=null;
   const TAU=Math.PI*2;
-  const COUNT=60; // reduced for perf
+  const COUNT=60;
   let pts=[];
 
   const rand=(a,b)=>a+Math.random()*(b-a);
@@ -1348,7 +907,6 @@ $('data-clear').addEventListener('click',()=>{
     H=canvas.height=window.innerHeight;
   }
   resize();
-
   let resizeTimer;
   window.addEventListener('resize',()=>{
     clearTimeout(resizeTimer);
@@ -1370,7 +928,6 @@ $('data-clear').addEventListener('click',()=>{
   }
   build();
 
-  // Pause when tab hidden
   document.addEventListener('visibilitychange',()=>{
     if(document.hidden){
       if(rafId){cancelAnimationFrame(rafId);rafId=null;}
@@ -1379,7 +936,6 @@ $('data-clear').addEventListener('click',()=>{
     }
   });
 
-  // Stop particles when in-game to free GPU for iframe
   const observer=new MutationObserver(()=>{
     if(document.body.classList.contains('in-game')){
       if(rafId){cancelAnimationFrame(rafId);rafId=null;}
@@ -1411,7 +967,6 @@ $('data-clear').addEventListener('click',()=>{
   }
   rafId=requestAnimationFrame(loop);
 })();
-
 
 document.querySelectorAll('.settings-select').forEach(sel=>{
   const wrap=document.createElement('div');wrap.className='csel';
