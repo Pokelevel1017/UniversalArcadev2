@@ -39,14 +39,10 @@ body{
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   overflow-x:hidden;
-  /* Promote body to own compositor layer */
-  transform:translateZ(0);
 }
 /* Particle canvas — own compositor layer */
 #particle-canvas{
   position:fixed;inset:0;pointer-events:none;z-index:0;
-  will-change:contents;
-  contain:strict;
 }
 ::selection{background:var(--text);color:var(--bg);}
 ::-webkit-scrollbar{width:4px;height:4px;}
@@ -61,7 +57,7 @@ input{font:inherit;outline:none;border:none;}
   display:flex;flex-direction:column;
   min-height:100vh;
   position:relative;z-index:1;
-  padding-bottom:var(--nav-h);
+  padding-bottom:100px;
 }
 
 /* ── Bottom Nav ── */
@@ -69,22 +65,21 @@ input{font:inherit;outline:none;border:none;}
   position:fixed;
   bottom:16px;
   left:50%;
-  transform:translateX(-50%) translateZ(0);
+  transform:translateX(-50%);
   z-index:100;
   display:flex;
   align-items:center;
   gap:2px;
   padding:6px;
-  background:rgba(18,18,18,0.85);
-  backdrop-filter:blur(24px) saturate(180%);
-  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  background:rgba(18,18,18,0.88);
+  backdrop-filter:blur(20px) saturate(160%);
+  -webkit-backdrop-filter:blur(20px) saturate(160%);
   border:1px solid rgba(255,255,255,0.1);
   border-radius:22px;
   box-shadow:
     0 2px 0 rgba(255,255,255,0.06) inset,
     0 20px 60px rgba(0,0,0,0.7),
     0 4px 16px rgba(0,0,0,0.5);
-  will-change:transform;
 }
 .nav-item{
   display:flex;align-items:center;gap:7px;
@@ -109,7 +104,7 @@ input{font:inherit;outline:none;border:none;}
 .page{display:none!important;}
 .page.active{display:block!important;animation:pgIn 200ms var(--ease) both;}
 @keyframes pgIn{from{opacity:0;transform:translate3d(0,6px,0);}to{opacity:1;transform:translate3d(0,0,0);}}
-body.is-home .page.active{display:flex!important;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - var(--nav-h));}
+body.is-home .page.active{display:flex!important;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;}
 
 /* ── Home ── */
 .home-hero{
@@ -493,6 +488,7 @@ body.is-home .page.active{display:flex!important;flex-direction:column;align-ite
 body.in-game{overflow:hidden;}
 body.in-game .game-view{display:flex;}
 body.in-game .app{display:none;}
+body.in-game .bottom-nav{display:none;}
 
 /* Game frame — centered rounded box */
 .game-stage{
@@ -550,10 +546,12 @@ body.in-game .app{display:none;}
   z-index:10;
   pointer-events:none;
   opacity:1;
-  transition:opacity 0.4s ease;
+  visibility:visible;
+  transition:opacity 0.35s ease,visibility 0.35s ease;
 }
 .game-loader.hidden{
   opacity:0;
+  visibility:hidden;
   pointer-events:none;
 }
 /* Spinner ring */
@@ -653,7 +651,7 @@ body.theme-amoled{--bg:#000;--bg-2:#040404;--bg-3:#080808;--bg-4:#0e0e0e;--line:
 @media(max-width:640px){
   .nav-item .nav-label{display:none !important;}
   .nav-item{padding:10px 12px;}
-  .pg-header{padding:36px 20px 20px;flex-direction:column;align-items:flex-start;}
+  .pg-header{padding:36px 20px 20px;}
   .pg-search-wrap input{width:100%;}
   .pg-grid{padding:16px 20px 48px;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));}
   .emu-grid{padding:16px 20px 48px;}
@@ -669,32 +667,6 @@ body.theme-amoled{--bg:#000;--bg-2:#040404;--bg-3:#080808;--bg-4:#0e0e0e;--line:
 <canvas id="particle-canvas"></canvas>
 
 <div class="app">
-
-  <!-- Bottom Navigation -->
-  <nav class="bottom-nav" role="navigation">
-    <button class="nav-item active" data-page="home" title="Home">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      <span class="nav-label">Home</span>
-    </button>
-    <button class="nav-item" data-page="games" title="Games">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/></svg>
-      <span class="nav-label">Games</span>
-    </button>
-    <button class="nav-item" data-page="emulators" title="Emulation">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="2" x2="9" y2="4"/><line x1="15" y1="2" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="22"/><line x1="15" y1="20" x2="15" y2="22"/><line x1="20" y1="9" x2="22" y2="9"/><line x1="20" y1="14" x2="22" y2="14"/><line x1="2" y1="9" x2="4" y2="9"/><line x1="2" y1="14" x2="4" y2="14"/></svg>
-      <span class="nav-label">Emulation</span>
-    </button>
-    <button class="nav-item" data-page="favorites" title="Favorites">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-      <span class="nav-label">Favorites</span>
-    </button>
-    <div class="nav-sep"></div>
-    <button class="nav-item" data-page="settings" title="Settings">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      <span class="nav-label">Settings</span>
-    </button>
-  </nav>
-
   <!-- Pages -->
 
   <!-- Home -->
@@ -884,6 +856,30 @@ body.theme-amoled{--bg:#000;--bg-2:#040404;--bg-3:#080808;--bg-4:#0e0e0e;--line:
     </div>
   </div>
 </div><!-- end .app -->
+
+<nav class="bottom-nav" role="navigation">
+    <button class="nav-item active" data-page="home" title="Home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span class="nav-label">Home</span>
+    </button>
+    <button class="nav-item" data-page="games" title="Games">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/></svg>
+      <span class="nav-label">Games</span>
+    </button>
+    <button class="nav-item" data-page="emulators" title="Emulation">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="2" x2="9" y2="4"/><line x1="15" y1="2" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="22"/><line x1="15" y1="20" x2="15" y2="22"/><line x1="20" y1="9" x2="22" y2="9"/><line x1="20" y1="14" x2="22" y2="14"/><line x1="2" y1="9" x2="4" y2="9"/><line x1="2" y1="14" x2="4" y2="14"/></svg>
+      <span class="nav-label">Emulation</span>
+    </button>
+    <button class="nav-item" data-page="favorites" title="Favorites">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+      <span class="nav-label">Favorites</span>
+    </button>
+    <div class="nav-sep"></div>
+    <button class="nav-item" data-page="settings" title="Settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span class="nav-label">Settings</span>
+    </button>
+  </nav>
 
 <!-- ── Game View ── -->
 <div class="game-view" id="game-view" aria-hidden="true">
@@ -1114,24 +1110,43 @@ if(gamesSearch)gamesSearch.addEventListener('input',debounce(e=>{gamesQ=e.target
 function showLoader(title){
   const l=$('game-loader'),lt=$('game-loader-title');
   if(!l)return;
-  lt&&(lt.textContent=title||'');
-  l.style.cssText='display:flex;opacity:1;pointer-events:none;';
+  if(lt)lt.textContent=title||'';
+  l.style.display='flex';
+  // Force reflow so transition works correctly
+  void l.offsetHeight;
   l.classList.remove('hidden');
-  // Restart bar animation
+  // Restart progress bar by cloning
   const bar=$('loader-bar');
-  if(bar){const nb=bar.cloneNode(false);bar.replaceWith(nb);nb.id='loader-bar';}
+  if(bar){
+    const nb=document.createElement('div');
+    nb.className='loader-bar';
+    nb.id='loader-bar';
+    bar.replaceWith(nb);
+  }
 }
 function hideLoader(){
   const l=$('game-loader');if(!l)return;
   l.classList.add('hidden');
-  setTimeout(()=>{if(l.classList.contains('hidden'))l.style.display='none';},440);
+  // After transition completes, hide from layout
+  setTimeout(()=>{
+    if(l.classList.contains('hidden')){
+      l.style.display='none';
+    }
+  },380);
 }
 function resetLoader(){
   const l=$('game-loader');if(!l)return;
-  l.style.cssText='display:flex;opacity:1;pointer-events:none;';
+  l.style.display='flex';
   l.classList.remove('hidden');
+  // Force reflow
+  void l.offsetHeight;
   const bar=$('loader-bar');
-  if(bar){const nb=bar.cloneNode(false);bar.replaceWith(nb);nb.id='loader-bar';}
+  if(bar){
+    const nb=document.createElement('div');
+    nb.className='loader-bar';
+    nb.id='loader-bar';
+    bar.replaceWith(nb);
+  }
 }
 
 // ── Open / Close game ──
@@ -1429,20 +1444,37 @@ $('data-clear').addEventListener('click',()=>{
 (function(){
   const canvas=document.getElementById('particle-canvas');
   if(!canvas)return;
-  const ctx=canvas.getContext('2d',{alpha:true,desynchronized:true});
+  // Safari/some browsers need plain 2d context
+  let ctx;
+  try{ctx=canvas.getContext('2d');}catch(e){return;}
+  if(!ctx)return;
   let W,H,rafId=null;
   const TAU=Math.PI*2;
   const COUNT=60;
   let pts=[];
   const rand=(a,b)=>a+Math.random()*(b-a);
 
-  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  function resize(){
+    const dpr=window.devicePixelRatio||1;
+    W=window.innerWidth;
+    H=window.innerHeight;
+    canvas.width=W*dpr;
+    canvas.height=H*dpr;
+    canvas.style.width=W+'px';
+    canvas.style.height=H+'px';
+    ctx.scale(dpr,dpr);
+  }
   resize();
 
   let resizeTimer;
   window.addEventListener('resize',()=>{
     clearTimeout(resizeTimer);
-    resizeTimer=setTimeout(()=>{resize();build();},150);
+    resizeTimer=setTimeout(()=>{
+      // Re-scale context after resize
+      ctx.setTransform(1,0,0,1,0,0);
+      resize();
+      build();
+    },150);
   },{passive:true});
 
   function build(){
@@ -1467,10 +1499,6 @@ $('data-clear').addEventListener('click',()=>{
   });
 
   // Pause while in-game to free GPU for iframe
-  document.body.addEventListener('classchange',()=>{});
-  const _origAdd=document.body.classList.add.bind(document.body.classList);
-  const _origRemove=document.body.classList.remove.bind(document.body.classList);
-
   // Watch for in-game via MutationObserver — only react to in-game toggle
   let _wasInGame=false;
   new MutationObserver(()=>{
