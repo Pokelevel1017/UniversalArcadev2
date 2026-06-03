@@ -541,58 +541,56 @@ body.in-game .bottom-nav{display:none;}
 .game-loader{
   position:absolute;inset:0;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:20px;
+  gap:24px;
   background:var(--bg);
   z-index:10;
-  pointer-events:none;
+  /* Always in DOM, toggled with opacity only — avoids display flicker */
   opacity:1;
-  visibility:visible;
-  transition:opacity 0.35s ease,visibility 0.35s ease;
+  pointer-events:auto;
+  transition:opacity 0.3s ease;
 }
 .game-loader.hidden{
   opacity:0;
-  visibility:hidden;
   pointer-events:none;
 }
-/* Spinner ring */
+/* Spinner */
 .loader-spinner{
-  width:48px;height:48px;
+  width:36px;height:36px;
   border-radius:50%;
-  border:2px solid rgba(255,255,255,0.08);
-  border-top-color:rgba(255,255,255,0.7);
-  animation:loaderSpin 0.8s linear infinite;
+  border:2.5px solid rgba(255,255,255,0.1);
+  border-top-color:rgba(255,255,255,0.8);
+  animation:loaderSpin 0.75s linear infinite;
   flex-shrink:0;
-  will-change:transform;
 }
 @keyframes loaderSpin{to{transform:rotate(360deg);}}
-/* Game title */
+/* Title */
 .loader-title{
-  font-size:15px;font-weight:600;
-  color:var(--text-2);
-  letter-spacing:-0.02em;
-  max-width:300px;text-align:center;
+  font-size:14px;font-weight:600;
+  color:var(--text-3);
+  letter-spacing:-0.01em;
+  max-width:280px;text-align:center;
   font-family:var(--font);
-  line-height:1.3;
+  line-height:1.4;
 }
 /* Progress bar */
 .loader-bar-wrap{
-  width:200px;height:2px;
-  background:rgba(255,255,255,0.07);
+  width:160px;height:2px;
+  background:rgba(255,255,255,0.06);
   border-radius:99px;
   overflow:hidden;
 }
 .loader-bar{
   height:100%;
-  background:rgba(255,255,255,0.55);
+  background:rgba(255,255,255,0.5);
   border-radius:99px;
   width:0%;
-  animation:loaderProgress 2.5s var(--ease) forwards;
+  animation:loaderProgress 3s ease-out forwards;
 }
 @keyframes loaderProgress{
-  0%{width:0%;}
-  40%{width:65%;}
-  80%{width:88%;}
-  100%{width:95%;}
+  0%  {width:0%;}
+  30% {width:55%;}
+  70% {width:82%;}
+  100%{width:93%;}
 }
 
 .game-info-bar{display:none;}
@@ -1107,46 +1105,33 @@ const gamesSearch=$('games-search');
 if(gamesSearch)gamesSearch.addEventListener('input',debounce(e=>{gamesQ=e.target.value.trim().toLowerCase();renderGames();},180),{passive:true});
 
 // ── Loader ──
+function _restartBar(){
+  // Clone to restart CSS animation — works on all browsers
+  const bar=$('loader-bar');
+  if(!bar)return;
+  const nb=document.createElement('div');
+  nb.className='loader-bar';
+  nb.id='loader-bar';
+  bar.parentNode.replaceChild(nb,bar);
+}
 function showLoader(title){
   const l=$('game-loader'),lt=$('game-loader-title');
   if(!l)return;
   if(lt)lt.textContent=title||'';
-  l.style.display='flex';
-  // Force reflow so transition works correctly
-  void l.offsetHeight;
+  // Never touch display — just remove hidden class
   l.classList.remove('hidden');
-  // Restart progress bar by cloning
-  const bar=$('loader-bar');
-  if(bar){
-    const nb=document.createElement('div');
-    nb.className='loader-bar';
-    nb.id='loader-bar';
-    bar.replaceWith(nb);
-  }
+  _restartBar();
 }
 function hideLoader(){
-  const l=$('game-loader');if(!l)return;
+  const l=$('game-loader');
+  if(!l)return;
   l.classList.add('hidden');
-  // After transition completes, hide from layout
-  setTimeout(()=>{
-    if(l.classList.contains('hidden')){
-      l.style.display='none';
-    }
-  },380);
 }
 function resetLoader(){
-  const l=$('game-loader');if(!l)return;
-  l.style.display='flex';
+  const l=$('game-loader');
+  if(!l)return;
   l.classList.remove('hidden');
-  // Force reflow
-  void l.offsetHeight;
-  const bar=$('loader-bar');
-  if(bar){
-    const nb=document.createElement('div');
-    nb.className='loader-bar';
-    nb.id='loader-bar';
-    bar.replaceWith(nb);
-  }
+  _restartBar();
 }
 
 // ── Open / Close game ──
@@ -1158,7 +1143,6 @@ function openGame(g){
   const stage=$('game-stage');
   // Remove old iframes
   stage.querySelectorAll('iframe').forEach(f=>f.remove());
-  resetLoader();
   showLoader(g.title);
   // Create iframe
   const iframe=document.createElement('iframe');
@@ -1230,7 +1214,6 @@ $('newtab-btn').addEventListener('click',()=>{
 
 $('reload-btn').addEventListener('click',()=>{
   if(!currentIframe||!currentGame)return;
-  resetLoader();
   showLoader(currentGame.title);
   currentIframe.addEventListener('load',hideLoader,{once:true});
   // Blank first, then restore — ensures hard reload
