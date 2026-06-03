@@ -553,16 +553,12 @@ body.in-game .bottom-nav{display:none;}
   opacity:0;
   pointer-events:none;
 }
-/* Spinner */
+/* Spinner — drawn by JS on canvas so speed is frame-time based, not CSS */
 .loader-spinner{
   width:36px;height:36px;
-  border-radius:50%;
-  border:2.5px solid rgba(255,255,255,0.1);
-  border-top-color:rgba(255,255,255,0.8);
-  animation:loaderSpin 0.75s linear infinite;
   flex-shrink:0;
+  display:block;
 }
-@keyframes loaderSpin{to{transform:rotate(360deg);}}
 /* Title */
 .loader-title{
   font-size:14px;font-weight:600;
@@ -879,7 +875,7 @@ body.theme-amoled{--bg:#000;--bg-2:#040404;--bg-3:#080808;--bg-4:#0e0e0e;--line:
   <!-- Game frame -->
   <div class="game-stage" id="game-stage">
     <div class="game-loader" id="game-loader">
-      <div class="loader-spinner"></div>
+      <canvas class="loader-spinner" id="loader-spinner" width="72" height="72"></canvas>
       <div class="loader-title" id="game-loader-title"></div>
       <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
     </div>
@@ -1113,6 +1109,63 @@ function _barStep(){
   if(_barProgress<90)_barRaf=requestAnimationFrame(_barStep);
 }
 
+// Canvas spinner — time-based so identical on all refresh rates
+let _spinRaf=null;
+let _spinAngle=0;
+let _spinLastTs=null;
+const _SPIN_SPEED=Math.PI*2/900; // one full rotation per 900ms
+
+function _drawSpinner(ts){
+  _spinRaf=requestAnimationFrame(_drawSpinner);
+  if(_spinLastTs===null)_spinLastTs=ts;
+  const dt=Math.min(ts-_spinLastTs,100); // cap dt to avoid big jumps after tab switch
+  _spinLastTs=ts;
+  _spinAngle+=_SPIN_SPEED*dt;
+
+  const cv=document.getElementById('loader-spinner');
+  if(!cv)return;
+  const dpr=window.devicePixelRatio||1;
+  const size=36;
+  // Only resize if needed
+  if(cv.width!==size*dpr){cv.width=size*dpr;cv.height=size*dpr;}
+  cv.style.width=size+'px';cv.style.height=size+'px';
+
+  const ctx=cv.getContext('2d');
+  ctx.clearRect(0,0,cv.width,cv.height);
+  ctx.scale(dpr,dpr);
+
+  const cx=size/2,cy=size/2,r=size/2-3;
+  // Track
+  ctx.beginPath();
+  ctx.arc(cx,cy,r,0,Math.PI*2);
+  ctx.strokeStyle='rgba(255,255,255,0.1)';
+  ctx.lineWidth=2.5;
+  ctx.stroke();
+  // Arc
+  ctx.beginPath();
+  ctx.arc(cx,cy,r,_spinAngle,_spinAngle+Math.PI*1.2);
+  const grad=ctx.createLinearGradient(0,0,size,size);
+  grad.addColorStop(0,'rgba(255,255,255,0.9)');
+  grad.addColorStop(1,'rgba(255,255,255,0.2)');
+  ctx.strokeStyle=grad;
+  ctx.lineWidth=2.5;
+  ctx.lineCap='round';
+  ctx.stroke();
+
+  ctx.setTransform(1,0,0,1,0,0);
+}
+
+function _startSpinner(){
+  if(_spinRaf)return;
+  _spinLastTs=null;
+  _spinRaf=requestAnimationFrame(_drawSpinner);
+}
+
+function _stopSpinner(){
+  if(_spinRaf){cancelAnimationFrame(_spinRaf);_spinRaf=null;}
+  _spinLastTs=null;
+}
+
 function _startBar(){
   if(_barRaf){cancelAnimationFrame(_barRaf);_barRaf=null;}
   _barProgress=0;
@@ -1143,17 +1196,18 @@ function showLoader(title){
   if(!l)return;
   if(lt)lt.textContent=title||'';
   l.classList.remove('hidden');
+  _startSpinner();
   _startBar();
 }
 
 function hideLoader(){
   const l=$('game-loader');
   if(!l)return;
-  // Complete bar first, then fade out
   _completeBar();
   setTimeout(()=>{
     l.classList.add('hidden');
     if(_barRaf){cancelAnimationFrame(_barRaf);_barRaf=null;}
+    _stopSpinner();
   },260);
 }
 
@@ -1161,6 +1215,7 @@ function resetLoader(){
   const l=$('game-loader');
   if(!l)return;
   l.classList.remove('hidden');
+  _startSpinner();
   _startBar();
 }
 
