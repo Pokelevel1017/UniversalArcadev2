@@ -572,7 +572,7 @@ body.in-game .bottom-nav{display:none;}
   font-family:var(--font);
   line-height:1.4;
 }
-/* Progress bar */
+/* Progress bar — JS driven */
 .loader-bar-wrap{
   width:160px;height:2px;
   background:rgba(255,255,255,0.06);
@@ -584,13 +584,7 @@ body.in-game .bottom-nav{display:none;}
   background:rgba(255,255,255,0.5);
   border-radius:99px;
   width:0%;
-  animation:loaderProgress 3s ease-out forwards;
-}
-@keyframes loaderProgress{
-  0%  {width:0%;}
-  30% {width:55%;}
-  70% {width:82%;}
-  100%{width:93%;}
+  transition:width 0.4s ease;
 }
 
 .game-info-bar{display:none;}
@@ -1105,33 +1099,69 @@ const gamesSearch=$('games-search');
 if(gamesSearch)gamesSearch.addEventListener('input',debounce(e=>{gamesQ=e.target.value.trim().toLowerCase();renderGames();},180),{passive:true});
 
 // ── Loader ──
-function _restartBar(){
-  // Clone to restart CSS animation — works on all browsers
+// ── Loader system ──
+let _barRaf=null;
+let _barProgress=0;
+
+function _barStep(){
+  // Slow logarithmic crawl: fast at first, slows near 90%
+  const remaining=90-_barProgress;
+  const step=Math.max(0.08, remaining*0.012);
+  _barProgress=Math.min(90,_barProgress+step);
   const bar=$('loader-bar');
-  if(!bar)return;
-  const nb=document.createElement('div');
-  nb.className='loader-bar';
-  nb.id='loader-bar';
-  bar.parentNode.replaceChild(nb,bar);
+  if(bar)bar.style.width=_barProgress+'%';
+  if(_barProgress<90)_barRaf=requestAnimationFrame(_barStep);
 }
+
+function _startBar(){
+  if(_barRaf){cancelAnimationFrame(_barRaf);_barRaf=null;}
+  _barProgress=0;
+  const bar=$('loader-bar');
+  if(bar){
+    // Reset width without transition, then start animating
+    bar.style.transition='none';
+    bar.style.width='0%';
+    // Let paint happen before starting
+    requestAnimationFrame(()=>{
+      bar.style.transition='width 0.4s ease';
+      _barRaf=requestAnimationFrame(_barStep);
+    });
+  }
+}
+
+function _completeBar(){
+  if(_barRaf){cancelAnimationFrame(_barRaf);_barRaf=null;}
+  const bar=$('loader-bar');
+  if(bar){
+    bar.style.transition='width 0.25s ease';
+    bar.style.width='100%';
+  }
+}
+
 function showLoader(title){
   const l=$('game-loader'),lt=$('game-loader-title');
   if(!l)return;
   if(lt)lt.textContent=title||'';
-  // Never touch display — just remove hidden class
   l.classList.remove('hidden');
-  _restartBar();
+  _startBar();
 }
+
 function hideLoader(){
   const l=$('game-loader');
   if(!l)return;
-  l.classList.add('hidden');
+  // Complete bar first, then fade out
+  _completeBar();
+  setTimeout(()=>{
+    l.classList.add('hidden');
+    if(_barRaf){cancelAnimationFrame(_barRaf);_barRaf=null;}
+  },260);
 }
+
 function resetLoader(){
   const l=$('game-loader');
   if(!l)return;
   l.classList.remove('hidden');
-  _restartBar();
+  _startBar();
 }
 
 // ── Open / Close game ──
